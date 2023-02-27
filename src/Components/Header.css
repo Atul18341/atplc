@@ -1,12 +1,24 @@
 .header {
-    width: 100%;
-    height: 10rem;
-    padding: 1rem 5%;
-    align-items: center;
     position: sticky;
     top: 0;
     z-index: 5;
-    background: var(--bg-dark);
+    transition: box-shadow .3s;
+}
+
+.header .row {
+    height: 8rem;
+    padding: 1rem 2%;
+    align-items: center;
+}
+
+.header.active {
+    background: var(--secondary);
+    box-shadow: 0 1rem 5rem -2rem var(--black);
+    color: var(--white);
+}
+
+.header.active .hamburger span {
+    background: var(--white);
 }
 
 header .heading {
@@ -27,6 +39,9 @@ header .heading {
 
 .header-actions {
     display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
 }
 
 
@@ -38,23 +53,31 @@ header .heading {
 
 /* Responsive */
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 1050px) {
 
     .header-actions {
         position: absolute;
         z-index: 5;
-        top: 10rem;
+        top: 8rem;
         left: 0;
+        flex-direction: column-reverse;
         display: none;
         width: 100%;
-        justify-content: flex-end;
-        background: var(--bg);
+        box-shadow: inset 0 1rem 5rem -2rem var(--black);
+    }
+
+    .header .row {
+        width: 100%;
     }
 
     .header-actions.active {
         display: flex;
         padding: 1rem 3rem;
-        background: var(--bg-dark);
+        background: var(--secondary);
+    }
+
+    .header-actions.active .row {
+        justify-content: space-between;
     }
 
 }

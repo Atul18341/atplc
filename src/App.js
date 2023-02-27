@@ -10,6 +10,9 @@ import Dashboard from './Pages/Dashboard'
 import Home from './Pages/Home'
 import Profile from './Pages/Profile'
 import Error from './Pages/Error'
+import Footer from './Components/Footer';
+import Courses from './Pages/Courses';
+import Login from './Pages/Login';
 
 function App() {
 
@@ -22,25 +25,29 @@ function App() {
       <Header />
 
       {/* Main */}
-      <Routes>
+      <main>
+        <Routes>
 
-        {/* Route For Home */}
-        {
-          userState.isLoggedIn ?
-            <Route exact path="/" element={<Dashboard />} />
-            :
-            <Route exact path="/" element={<Home />} />
-        }
+          {/* Route For Home */}
+          <Route exact path="/" element={Object.entries(userState).length ? <Dashboard /> : <Home />} />
 
-        {/* Route For Profile */}
-        <Route exact path="/profile" element={<Profile />} />
+          {/* Route For Login */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Route For 404 Error Page */}
-        <Route exact path="*" element={<Error />} />
+          {/* Route For Courses */}
+          <Route path="/my-courses" element={<Courses />} />
 
-      </Routes>
+          {/* Route For Profile */}
+          <Route path="/profile" element={<Profile />} />
+
+          {/* Route For 404 Error Page */}
+          <Route path="*" element={<Error />} />
+
+        </Routes>
+      </main>
 
       {/* Footer */}
+      <Footer />
 
     </div>
   );

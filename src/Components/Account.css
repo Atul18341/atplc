@@ -21,11 +21,24 @@
     font-weight: bold;
     user-select: none;
     pointer-events: none;
+    color: var(--white);
+    overflow: hidden;
 }
 
-.header-profile .profile-name {
-    font-size: var(--large-font);
+.header-profile .profile-pic img {
+    width: 100%;
+}
+
+.header-profile .profile-details {
     pointer-events: none;
+}
+
+.profile-details .profile-name {
+    font-size: var(--large-font);
+}
+
+.profile-details .profile-email {
+    font-size: var(--small-font);
 }
 
 .account .profile-popup {
@@ -33,15 +46,16 @@
     width: 30%;
     min-width: 30rem;
     position: absolute;
-    top: 10.5rem;
+    top: 8.5rem;
     right: .5rem;
-    background: var(--bg-dark);
+    background: var(--bg-light);
     padding: 1rem 0;
     border-radius: .5rem;
     visibility: hidden;
     transform: translateY(50%);
     transition: visiblity .3s, transform .1s;
     pointer-events: none;
+    box-shadow: 0 1rem 5rem -2rem var(--black);
 }
 
 .account .profile-popup.active {
@@ -72,12 +86,13 @@
 .profile-popup ul li a {
     padding: 0;
     flex: 1;
+    color: var(--text);
 }
 
 li .text {
-    color: var(--text);
     font-weight: 400;
 }
+
 
 .profile-popup ul li#user-id .text {
     color: var(--primary);
@@ -90,45 +105,14 @@ li .text {
 }
 
 .profile-popup ul li:hover {
-    background: linear-gradient(to left, transparent, var(--bg-light), transparent);
+    background: linear-gradient(to left, transparent, var(--bg), transparent);
 }
 
 .profile-popup ul li:hover .text,
-.profile-popup ul li:hover .icon {
+.profile-popup ul li:hover .icon span {
     color: var(--primary);
 }
 
 .account .header-login {
     padding: .5rem;
-}
-
-.header-login .login-button {
-    font-size: var(--medium-font);
-    padding: .5rem 1.5rem;
-    background: linear-gradient(to left, #8499ff, #c18bff);
-    border: none;
-    border-radius: .3rem;
-    cursor: pointer;
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-}
-
-.login-button .text {
-    font-weight: 600;
-}
-
-
-
-
-/* Responsive */
-
-@media screen and (max-width: 650px) {
-
-    .account .profile-popup.active {
-        top: 8rem;
-    }
-
 }

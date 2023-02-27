@@ -2,21 +2,28 @@ import React, { useContext } from 'react'
 import Card from '../Components/Card'
 import './CommonPage.css'
 import './Dashboard.css'
-import userContext from '../Context/User/userContext'
+// import userContext from '../Context/User/userContext'
+import taskContext from '../Context/Tasks/taskContext'
 import TaskCard from '../Components/TaskCard'
 
 export default function Dashboard() {
 
-    const { userState } = useContext(userContext);
 
-    const totalTasks = userState.user.tasks.length;
-    const pendingTasks = userState.user.tasks.filter((task) => {
-        return task.isPending;
-    }).length;
+    // const { userState } = useContext(userContext);
+    const { taskState } = useContext(taskContext);
+
+
+
+    const totalTasks = taskState.length;
+
+
+
+    const pendingTasks = 1
+
 
 
     return (
-        <main className='page dashboard-page'>
+        <section className='page dashboard-page'>
             <div className="title">
                 <h3>Dashboard</h3>
             </div>
@@ -40,21 +47,23 @@ export default function Dashboard() {
             <div className="recent-task-container">
                 <TaskCard
                     isRecent={1}
-                    {...userState.user.tasks[totalTasks - 1]}
+                    {...taskState[totalTasks - 1]}
                 />
             </div>
             <div className="title">
                 <h3>Previous Tasks</h3>
             </div>
             <div className="task-list-container grid">
-                {userState.user.tasks.slice(0, totalTasks - 1).map(task => {
-                    return <TaskCard
-                        isRecent={0}
-                        key={task.no}
-                        {...task}
-                    />
-                }).reverse()}
+                {
+                    taskState.slice(0, totalTasks - 1).map(task => {
+                        return <TaskCard
+                            isRecent={0}
+                            key={task.id}
+                            {...task}
+                        />
+                    }).reverse()
+                }
             </div>
-        </main>
+        </section>
     )
 }

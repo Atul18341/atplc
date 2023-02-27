@@ -4,7 +4,8 @@
 :root {
   --white: #ffffff;
   --black: #000000;
-  --primary: #6075ff;
+  --primary: #9c394b;
+  --secondary: #4a4e5a;
   --success: #41f1b6;
   --success-tint: #a8ffe2;
   --warning: #ffbb55;
@@ -31,13 +32,20 @@ html {
   /* font-family: 'Babylonica', cursive;
   font-family: 'Poppins', sans-serif; */
   font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+
+}
+
+::selection {
+  color: var(--bg-dark);
+  background: var(--bg-dark);
 }
 
 /* Body */
 
 body {
-  --bg-light: hsl(0, 0%, 98%);
-  --bg: hsl(0, 0%, 93%);
+  --bg-light: hsl(330, 100%, 99%);
+  --bg: hsl(0, 0%, 94%);
   --bg-dark: hsl(0, 0%, 88%);
   --text: #101010;
   --faded-text: rgba(0, 0, 0, 0.3);
@@ -69,7 +77,11 @@ ul {
 
 a {
   text-decoration: none;
-  color: var(--text);
+  color: inherit;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 img {
@@ -97,14 +109,19 @@ img {
 .icon {
   display: grid;
   place-items: center;
-  padding: 0 .5rem;
 }
 
 .icon span {
-  font-size: var(--medium-font);
+  font-size: var(--large-font);
   color: var(--text);
   user-select: none;
 }
+
+.icon~.text {
+  color: var(--text);
+  font-size: var(--medium-font);
+}
+
 
 .col {
   display: flex;
@@ -137,9 +154,12 @@ img {
 
 /* Responsive */
 
-@media screen and (max-width:600px) {
+@media screen and (max-width:650px) {
   .dashboard-page {
     grid-template-columns: 1fr;
   }
 
+  :root {
+    --medium-font: 1.8rem;
+  }
 }
