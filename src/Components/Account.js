@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import userContext from '../Context/User/userContext'
+import React, { useEffect, useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import './Account.css'
 import LogInWithGithub from './LogInWithGithub';
 
-export default function Account({ accountRef }) {
+export default function Account({ accountRef, setHamburgerStatus }) {
 
-    const { userState, setUserState } = useContext(userContext);
     const [popUpStatus, setPopUpStatus] = useState(false);
     const popUpRef = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.addEventListener('click', (e) => {
@@ -20,24 +20,28 @@ export default function Account({ accountRef }) {
         setPopUpStatus(!popUpStatus);
     }
     const logOut = async () => {
-        await setUserState({});
+        localStorage.removeItem('user')
+        navigate('/', { replace: true });
+
     }
 
 
-
+    const scrollToTop = () => {
+        window.scrollTo(0, 0)
+    }
     return (
         <div className="account" ref={accountRef}>
             {
-                Object.entries(userState).length
+                JSON.parse(localStorage.getItem('user'))
                     ?
                     <>
                         <div className="header-profile row" ref={popUpRef} onClick={togglePopUp}>
                             <div className="profile-pic">
-                                <img src={userState.profileImg} alt="profile" />
+                                {JSON.parse(localStorage.getItem('user')).fullName[0]}
                             </div>
                             <div className="profile-details col">
-                                <div className="profile-name">{userState.name}</div>
-                                <div className="profile-email">{userState.email}</div>
+                                <div className="profile-name">{JSON.parse(localStorage.getItem('user')).fullName.split(' ')[0]}</div>
+                                <div className="profile-email">{JSON.parse(localStorage.getItem('user'))?.email}</div>
                             </div>
                         </div>
                         <div className={`profile-popup ${popUpStatus ? 'active' : ''}`}>
@@ -46,10 +50,10 @@ export default function Account({ accountRef }) {
                                     <div className="icon">
 
                                     </div>
-                                    <div className="text">Id : {userState.id}</div>
+                                    <div className="text">Id : {JSON.parse(localStorage.getItem('user')).username}</div>
                                 </li>
                                 <li>
-                                    <a href={userState.githubProfile} target="_blank" rel="noreferrer">
+                                    <Link to="/profile" onClick={scrollToTop} >
                                         <div className="icon">
                                             <span className="material-symbols-rounded">
                                                 person
@@ -57,7 +61,18 @@ export default function Account({ accountRef }) {
                                         </div>
                                         <div className="text">Profile
                                         </div>
-                                    </a>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/my-courses" onClick={scrollToTop}>
+                                        <div className="icon">
+                                            <span className="material-symbols-rounded">
+                                                library_books
+                                            </span>
+                                        </div>
+                                        <div className="text">My Courses
+                                        </div>
+                                    </Link>
                                 </li>
                                 <li onClick={logOut}>
                                     <div className="icon">
@@ -71,7 +86,7 @@ export default function Account({ accountRef }) {
                         </div>
                     </>
                     :
-                    <div className="header-login">
+                    <div className="header-login" onClick={() => setHamburgerStatus(false)}>
                         <LogInWithGithub />
                     </div>
             }

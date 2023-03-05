@@ -6,6 +6,8 @@
     transition: .3s;
     place-self: flex-start;
     width: 100%;
+    cursor: pointer;
+    border: 1px solid var(--secondary);
 }
 
 
@@ -100,7 +102,7 @@
     color: var(--black);
 }
 
-.status-label .text {
+.status-label .icon~.text {
     font-weight: 500;
     color: var(--black);
     font-size: var(--small-font);

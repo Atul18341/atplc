@@ -1,8 +1,5 @@
 import './App.css';
-import { useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
-// Contexts
-import userContext from './Context/User/userContext';
 // Components
 import Header from './Components/Header';
 // Pages
@@ -11,12 +8,13 @@ import Home from './Pages/Home'
 import Profile from './Pages/Profile'
 import Error from './Pages/Error'
 import Footer from './Components/Footer';
-import Courses from './Pages/Courses';
+import MyCourses from './Pages/MyCourses';
 import Login from './Pages/Login';
+import Courses from './Pages/Courses';
+import Task from './Pages/Task';
 
 function App() {
 
-  const { userState } = useContext(userContext);
 
   return (
     <div className="App">
@@ -29,13 +27,21 @@ function App() {
         <Routes>
 
           {/* Route For Home */}
-          <Route exact path="/" element={Object.entries(userState).length ? <Dashboard /> : <Home />} />
+          <Route exact path="/" element={<Home />} />
 
           {/* Route For Login */}
           <Route path="/login" element={<Login />} />
 
           {/* Route For Courses */}
-          <Route path="/my-courses" element={<Courses />} />
+          <Route path="/courses" element={<Courses />} />
+
+          {/* Route For My-Courses */}
+          <Route path="/my-courses" element={<MyCourses />} />
+          {/* Route For My Specific Courses */}
+          <Route path="/my-courses/:courseName" element={<Dashboard />} />
+
+          {/* Route For Specific Task */}
+          <Route path="/task/:taskName" element={<Task />} />
 
           {/* Route For Profile */}
           <Route path="/profile" element={<Profile />} />

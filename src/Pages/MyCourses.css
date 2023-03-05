@@ -1,16 +1,16 @@
-.courses-page .page-heading {
+.my-courses-page .page-heading {
     font-size: 3rem;
     padding: 1rem 3rem;
     margin: 1rem 0;
-    /* color: var(--text); */
+    color: var(--text);
     font-weight: 700;
 }
 
-.courses-page .courses-grid {
+.my-courses-page .courses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
     padding: 2rem 5%;
-    align-items: flex-start;
+    align-items: center;
     align-self: flex-start;
     gap: 2rem;
 }

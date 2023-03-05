@@ -1,11 +1,17 @@
 import React from 'react'
-import { HashRouter, Link } from 'react-router-dom'
+import { Link, } from 'react-router-dom'
 import './Navbar.css'
 
 export default function Navbar({ hamburgerStatus, setHamburgerStatus }) {
 
+
     const handleLinkClick = () => {
+        window.scrollTo(0, 0)
         setHamburgerStatus(false)
+    }
+    const scrollTo = (elementId) => {
+        const element = document.querySelector(elementId);
+        element.scrollIntoView(elementId)
     }
 
     return (
@@ -22,17 +28,17 @@ export default function Navbar({ hamburgerStatus, setHamburgerStatus }) {
                     </Link>
                 </li>
                 <li className="nav-items">
-                    <a onClick={handleLinkClick} href="/#about" className="nav-links">
+                    <Link onClick={() => { scrollTo('#footer') }} to="#" className="nav-links">
                         <div className="icon">
                             <span className="material-symbols-rounded">
                                 help
                             </span>
                         </div>
                         <div className="text">About</div>
-                    </a>
+                    </Link>
                 </li>
                 <li className="nav-items">
-                    <Link onClick={handleLinkClick} to="/my-courses" className="nav-links">
+                    <Link onClick={handleLinkClick} to="/courses" className="nav-links">
                         <div className="icon">
                             <span className="material-symbols-rounded">
                                 book
@@ -52,7 +58,7 @@ export default function Navbar({ hamburgerStatus, setHamburgerStatus }) {
                     </Link>
                 </li>
                 <li className="nav-items">
-                    <Link onClick={handleLinkClick} to="/#feedback" className="nav-links">
+                    <Link onClick={() => { scrollTo('#footer') }} to="#" className="nav-links">
                         <div className="icon">
                             <span className="material-symbols-rounded">
                                 forum

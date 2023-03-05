@@ -1,0 +1,27 @@
+.error-message {
+    width: 100%;
+    height: 50rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    gap: 2rem;
+    position: relative;
+}
+
+.error-message .icon span {
+    font-size: 10rem;
+}
+
+.error-message .text {
+    font-size: 5rem;
+}
+
+.error-message .status-code {
+    position: absolute;
+    font-size: 30vw;
+    opacity: .03;
+    font-weight: 900;
+    padding: 1rem;
+    z-index: -1;
+}

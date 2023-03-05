@@ -41,7 +41,7 @@ header.active .login-button:hover {
 
 header.active .login-button .text,
 header.active .login-button .icon span {
-    /* color: var(--text); */
+    color: var(--text);
 }
 
 

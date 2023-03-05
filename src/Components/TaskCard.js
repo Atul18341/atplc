@@ -1,88 +1,86 @@
-import React, { useState } from 'react'
-import SubmitSolution from './SubmitSolution';
-import './TaskCard.css'
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import './TaskCard.css';
 
-export default function TaskCard({ isRecent, id, name, desc, date, status, solution }) {
+export default function TaskCard({ courseId, Task_No, Task_Topic, Task_Content, Task_Status, Submission_Link, Remarks }) {
 
-    const newDate = new Date(date);
+    const taskNumber = Task_No < 10 ? `0${Task_No}` : Task_No;
 
-    const [cardToggle, setCardToggle] = useState(false);
+
+
+    let statusLabel;
+    if (Task_Status === "Under Review") {
+        statusLabel = (
+            <div className="status-label info row">
+                <div className="icon">
+                    <span className="material-symbols-rounded">
+                        schedule
+                    </span>
+                </div>
+                <div className="text">Under Review</div>
+            </div>
+        );
+    } else if (Task_Status === "Rejected") {
+        statusLabel = (
+            <div className="status-label danger row">
+                <div className="icon">
+                    <span className="material-symbols-rounded">
+                        block
+                    </span>
+                </div>
+                <div className="text">Rejected</div>
+            </div>
+        );
+    }
+    else if (Task_Status === "Approved") {
+        statusLabel = (
+            <div className="status-label success row">
+                <div className="icon">
+                    <span className="material-symbols-rounded">
+                        verified
+                    </span>
+                </div>
+                <div className="text">Verified</div>
+            </div>
+        );
+    }
+    else {
+        statusLabel = (
+            <div className="status-label pending row">
+                <div className="icon">
+                    <span className="material-symbols-rounded">
+                        cancel
+                    </span>
+                </div>
+                <div className="text">Not Submitted</div>
+            </div>
+        );
+    }
+
     return (
-        <div className={`task-card ${isRecent ? 'recent' : ''}`}>
+        <Link to={`/task/${Task_Topic}`} className={`task-card`} state={{ courseId, Task_No, Task_Topic, Task_Content, Task_Status, Submission_Link, Remarks }}>
 
             <div className="top row">
                 <div className="left">
-                    <div className="task-number">{id < 10 ? ` 0${id}` : id}</div>
+                    <div className="task-number">{taskNumber}</div>
                 </div>
                 <div className="right col">
                     <div className="task-name">
-                        {name}
-                    </div>
-                    <div className="task-date row">
-                        <div className="icon">
-                            <span className="material-symbols-rounded">
-                                calendar_month
-                            </span>
-                        </div>
-                        <div className="text">{newDate.toLocaleString()}</div>
+                        {Task_Topic}
                     </div>
                 </div>
             </div>
 
-            <div className="middle">
-                <div className="task-description">{desc}</div>
-            </div>
+            {/* <div className="middle">
+                    <div className="task-description">{Task_Content}</div>
+                </div> */}
 
-            <div className="bottom col" >
+            <div className="bottom col">
                 <div className="status">
-                    {
-                        solution === ''
-                            ?
-                            <div className="status-label danger row">
-                                <div className="icon">
-                                    <span className="material-symbols-rounded">
-                                        report
-                                    </span>
-                                </div>
-                                <div className="text">Not Submitted</div>
-                            </div>
-                            :
-                            status === "pending" ?
-                                <div className="status-label pending row">
-                                    <div className="icon">
-                                        <span className="material-symbols-rounded">
-                                            schedule
-                                        </span>
-                                    </div>
-                                    <div className="text">Verification Pending</div>
-                                </div>
-                                :
-                                <div className="status-label success row">
-                                    <div className="icon">
-                                        <span className="material-symbols-rounded">
-                                            verified
-                                        </span>
-                                    </div>
-                                    <div className="text">Verified</div>
-                                </div>
-                    }
+                    {statusLabel}
                 </div>
-                <div className={`toogle-button row ${cardToggle ? 'active' : ''}`} onClick={() => { setCardToggle(!cardToggle) }}>
-                    <div className="text">Submit Solution</div>
-                    <div className="icon">
-                        <span className="material-symbols-rounded">
-                            expand_more
-                        </span>
-                    </div>
-                </div>
-                {
-                    cardToggle
-                    &&
-                    < SubmitSolution id={id} value={solution} type="url" placeholder={`Ex - https://github.com/<your_username>/ATPLC-Training-Daily_Tasks`} />
-                }
 
             </div>
-            <div className="label">Recent Task</div>
-        </div>
-    )
+        </Link>
+    );
 }
