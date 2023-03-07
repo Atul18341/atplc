@@ -10,6 +10,8 @@
     border-radius: .5rem;
     border: .1rem solid var(--bg-dark);
     box-shadow: 0rem 2rem 2rem -1rem rgba(0, 0, 0, .5);
+    min-width: 35rem;
+    width: 40vw;
 }
 
 .login-container .login-heading {
@@ -43,7 +45,7 @@
 .login-inputs .input-container {
     position: relative;
     border-radius: .3rem;
-    width: 50rem;
+    width: 100%;
 
 }
 
@@ -68,7 +70,14 @@
     background: var(--bg-light);
     border-radius: .3rem;
     color: var(--text);
+}
+
+.input-container input#username {
     text-transform: uppercase;
+}
+
+.input-container input::placeholder {
+    user-select: none;
 }
 
 .input-container input~label {
@@ -105,6 +114,7 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    font-weight: 600;
 }
 
 .login-inputs .login-button:hover {
@@ -114,6 +124,10 @@
 }
 
 .login-inputs .login-button:hover .loader span {
+    color: var(--primary);
+}
+
+.login-inputs .login-button:hover .text {
     color: var(--primary);
 }
 
@@ -127,7 +141,7 @@
     animation: rotate 2s ease-in-out infinite;
 }
 
-.login-button .text {
+.login-inputs .login-button .text {
     color: var(--white);
 }
 
@@ -146,7 +160,6 @@
 @media screen and (max-width:500px) {
     .login-inputs .input-container {
         position: relative;
-        width: 80vw;
         border-radius: .3rem;
 
     }

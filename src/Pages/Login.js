@@ -17,15 +17,16 @@ export default function Login() {
 
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         if (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user'))?.userId !== undefined) {
-            navigate('/', { replace: true });
+            navigate('/login', { replace: true });
         }
-    })
+    }, [])
 
     const handelChange = (e, name) => {
         setLoginDetails({
             ...loginDetails,
-            [name]: e.target.value.toUpperCase()
+            [name]: e.target.value
         })
     }
 
@@ -34,11 +35,15 @@ export default function Login() {
         if (loginDetails.Username !== '' && loginDetails.Password !== '') {
             try {
                 setIsLoading(true);
-                const { data } = await axios.post('https://atplc20.pythonanywhere.com/login', { ...loginDetails, Username: loginDetails.Username.toUpperCase() });
+                const { data } = await axios.post('https://atplc20.pythonanywhere.com/login', {
+                    Password: loginDetails.Password,
+                    Username: loginDetails.Username.toUpperCase()
+                });
+
 
                 localStorage.setItem('user', JSON.stringify({
                     userId: data.user_id[0].id,
-                    username: loginDetails.Username,
+                    username: loginDetails.Username.toUpperCase(),
                     fullName: data.user_id[0].first_name,
                 }));
 
@@ -77,7 +82,7 @@ export default function Login() {
                                 </span>
                             </div>
                             <input type="text" id='username' value={loginDetails.Username} placeholder=' ' onChange={(e) => handelChange(e, 'Username')} />
-                            <label htmlFor="username">username / email</label>
+                            <label htmlFor="username">username</label>
                         </div>
                         <div className="input-container">
                             <div className="icon">

@@ -14,10 +14,11 @@ export default function Courses() {
 
     const fetchCourses = useCallback(async () => {
         try {
-            const response = await axios.post('https://atplc20.pythonanywhere.com/my-courses', {
+            const { data } = await axios.post('https://atplc20.pythonanywhere.com/my-courses', {
                 Username: JSON.parse(localStorage.getItem('user')).username,
             });
-            setMyCourses(response.data);
+            setMyCourses(data);
+            localStorage.setItem('courses', JSON.stringify(data))
         } catch (error) {
             setError(error);
         } finally {
@@ -26,8 +27,9 @@ export default function Courses() {
     }, []);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         if (!localStorage.getItem('user')) {
-            navigate('/', { replace: true });
+            navigate('/login', { replace: true });
         }
         fetchCourses();
     }, [fetchCourses, navigate]);
