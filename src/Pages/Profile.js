@@ -1,114 +1,173 @@
-import axios from 'axios';
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import './Profile.css'
 
 export default function Profile() {
-    const [newPassword, setNewPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(true);
     const [message, setMessage] = useState('');
+    const [profile, setProfile] = useState(
+        {
+            id: 38,
+            Profile_Pic: '',
+            Profile_Preview: '',
+            Name: "",
+            College_Name: "",
+            Branch: "",
+            Batch: '',
+            Contact_No: '',
+            Hometown: '',
+            Username: '',
+        }
+    );
 
-    const changePassword = async (e) => {
+    const changePersonalInfo = async (e) => {
+        setIsLoading(true);
         e.preventDefault();
-
         try {
-            setIsLoading(true);
-            const { data } = await axios.post('https://atplc20.pythonanywhere.com/change-password', {
-                Username: JSON.parse(localStorage.getItem('user')).username,
-                Password: newPassword
-            })
-            setMessage(data.Response);
+            const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/profile`, profile);
 
-        } catch (error) {
-            setMessage(error);
+            console.log('updating profile - ' + data);
+        }
+        catch (error) {
+            setMessage(error.response.statusText || error.message)
         }
         finally {
-            setIsLoading(false)
-            setNewPassword('')
+            setIsLoading(false);
+        }
+    }
+    const getProfile = async (source) => {
+        setIsLoading(true);
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_PATH}/profile`, {
+                Username: JSON.parse(localStorage.getItem('user')).userId
+            }, { cancelToken: source })
+            console.log(data);
+            setProfile(data);
+
+        } catch (error) {
+            setMessage(error.response.statusText || error.message)
+        }
+        finally {
+            setIsLoading(false);
         }
 
     }
+
+    useEffect(() => {
+        const source = axios.CancelToken.source();
+        getProfile(source);
+        return source.cancel();
+    }, [])
+
+    const handelImageUpload = (e) => {
+        const image = e.target.files[0];
+
+        const imagePreview = URL.createObjectURL(e.target.files[0]);
+
+        setProfile({ ...profile, Profile_Pic: image, Profile_Preview: imagePreview });
+
+    }
+
+    const handelChange = (e, name) => {
+        setProfile({ ...profile, [name]: e.target.value })
+    }
+
     return (
-        <section className='page profile-page'>
-            <div className="section-heading">
-                <h3>Profile</h3>
+        <div className="personal-info-field">
+            <div className="field-heading">
+                <h4>Personal Information</h4>
             </div>
-            <div className="seciton-body">
-                <div className="profile-header">
-                    <div className="profile-pic">
+            <form className='field-body' onSubmit={changePersonalInfo}>
+                <div className="update-field">
+                    <div className="profile-img">
                         {
-                            JSON.parse(localStorage.getItem('user')).fullName[0]
+                            profile.Profile_Preview !== '' ?
+                                <img src={profile.Profile_Preview} alt="profile-pic" />
+                                :
+                                <i className="fi fi-rr-user"></i>
                         }
                     </div>
-                    <div className="profile-details">
-                        <div className="name profile-info">
-                            <span>Name : </span>
-                            <span>
-                                {
-                                    JSON.parse(localStorage.getItem('user')).fullName
-                                }
-                            </span>
-                        </div>
-                        <div className="roll-no profile-info">
-                            <span>Roll No : </span>
-                            <span>
-                                {
-                                    JSON.parse(localStorage.getItem('user')).username
-                                }
-                            </span>
-                        </div>
-                        <div className="courses profile-info">
-                            <span>Enrolled Courses : </span>
-                            {
-                                JSON.parse(localStorage.getItem('courses')).map(course => {
 
-                                    return <span className='course' key={course.Course_id}>
-                                        {course.Course__Course_Name}
-                                    </span>
-                                })
-                            }
-                        </div>
+                    <div className="upload-profile-img">
+                        <input type="file" accept=".jpg,.jpeg,.png" id='upload-profile-pic' onChange={handelImageUpload} />
+                        <label htmlFor="upload-profile-pic">
+                            <i className="fi fi-rr-camera"></i>
+                        </label>
                     </div>
                 </div>
 
-                <div className="edit-profile">
-                    <div className="edit password-filed">
-                        <div className="field-heading">
-                            <h4>Change Password</h4>
+                {
+                    message !== '' &&
+                    <div className="message-box">
+                        {message}
+                    </div>
+                }
+                <div className="update-field">
+                    <div className="input-box">
+                        <div className="icon">
+                            <i className="fi fi-rr-id-card-clip-alt"></i>
                         </div>
-                        <form className='field-body' onSubmit={changePassword}>
-                            {
-                                message !== '' &&
-                                <div className="message-box">
-                                    {message}
-                                </div>
-                            }
-                            <div className="row">
-                                <div className="input-container">
-                                    <div className="icon">
-                                        <span className="material-symbols-rounded">
-                                            key
-                                        </span>
-                                    </div>
-                                    <input type="password" placeholder=' ' required id='password' onChange={(e) => { setNewPassword(e.target.value); setMessage('') }} />
-                                    <label htmlFor="password">New Password</label>
-                                </div>
-                                <button type='submit'>
-                                    {
-                                        isLoading &&
-                                        <span className="material-symbols-rounded">
-                                            donut_large
-                                        </span>
-
-                                    }
-                                    <div className="text">Update</div>
-                                </button>
-                            </div>
-                        </form>
+                        <input type="text" placeholder=' ' id='full-name' value={profile.Name} onChange={(e) => handelChange(e, 'Name')} />
+                        <label htmlFor="full-name">Name</label>
                     </div>
                 </div>
-            </div>
-        </section >
+                <div className="update-field">
+                    <div className="input-box">
+                        <div className="icon">
+                            <i className="fi fi-rr-graduation-cap"></i>
+                        </div>
+                        <input type="text" placeholder=' ' id='college' value={profile.College_Name} onChange={(e) => handelChange(e, 'College_Name')} />
+                        <label htmlFor="college">College</label>
+                    </div>
+                </div>
+                <div className="update-field">
+                    <div className="input-box">
+                        <div className="icon">
+                            <i className="fi fi-rr-code-branch"></i>
+                        </div>
+                        <input type="text" placeholder=' ' id='branch' value={profile.Branch} onChange={(e) => handelChange(e, 'Branch')} />
+                        <label htmlFor="branch">Branch</label>
+                    </div>
+                    <div className="input-box">
+                        <div className="icon">
+                            <i className="fi fi-rr-badge"></i>
+                        </div>
+                        <input type="number" placeholder=' ' id='batch' value={profile.Batch} onChange={(e) => handelChange(e, 'Batch')} />
+                        <label htmlFor="batch">Batch</label>
+                    </div>
+                </div>
+                <div className="update-field">
+                    <div className="input-box">
+                        <div className="icon">
+                            <i className="fi fi-rr-house-building"></i>
+                        </div>
+                        <input type="text" placeholder=' ' id='hometown' value={profile.Hometown} onChange={(e) => handelChange(e, 'Hometown')} />
+                        <label htmlFor="hometown">Hometown</label>
+                    </div>
+                    <div className="input-box">
+                        <div className="icon">
+                            <i className="fi fi-rr-mobile-notch"></i>
+                        </div>
+                        <input type="number" placeholder=' ' id='contact-no' value={profile.Contact_No} onChange={(e) => handelChange(e, 'Contact_No')} />
+                        <label htmlFor="contact-no">Contact No</label>
+                    </div>
+                </div>
+                <button className='profile-update-btn'>
+                    <div className="icon">
+                        {
+                            isLoading ?
+                                <div className="loader animate-rotate">
+                                    <i className="fi fi-rr-loading"></i>
+                                </div>
+                                :
+                                <i className="fi fi-rr-refresh"></i>
+                        }
+                    </div>
+                    <div className="text">Update Profile</div>
+                </button>
+            </form>
+        </div>
     )
 }
-
 

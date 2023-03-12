@@ -24,16 +24,6 @@
     border-bottom: .5rem solid var(--primary);
 }
 
-.login-container .error-messages {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    background: linear-gradient(to right, transparent, var(--bg-dark), transparent);
-    color: var(--text);
-    font-weight: 600;
-    font-size: var(--small-font);
-    transition: .3s;
-}
 
 .login-container .login-inputs,
 .login-container .login-inputs form {
@@ -97,7 +87,7 @@
 
 .input-container input:focus~label,
 .input-container input:not(:placeholder-shown)~label {
-    top: .5rem;
+    top: .7rem;
     font-size: var(--small-font);
     color: var(--primary);
     transform: translateY(0%);
@@ -115,43 +105,20 @@
     justify-content: center;
     gap: 1rem;
     font-weight: 600;
+    color: var(--white);
 }
 
 .login-inputs .login-button:hover {
-    color: var(--text);
+    color: var(--primary);
     background: transparent;
     border: .1rem solid var(--primary);
 }
 
-.login-inputs .login-button:hover .loader span {
-    color: var(--primary);
-}
 
-.login-inputs .login-button:hover .text {
-    color: var(--primary);
-}
 
-.login-button .loader {
-    display: grid;
-    place-items: center;
-    color: var(--white);
-}
-
-.login-button .loader.loading {
-    animation: rotate 2s ease-in-out infinite;
-}
-
-.login-inputs .login-button .text {
-    color: var(--white);
-}
-
-@keyframes rotate {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.login-button .loader span {
+.login-button .icon i,
+.login-button .text {
+    color: inherit;
     font-weight: bold;
     font-size: var(--medium-font);
 }

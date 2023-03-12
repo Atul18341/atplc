@@ -14,8 +14,8 @@ export default function Courses() {
 
     const fetchCourses = useCallback(async () => {
         try {
-            const { data } = await axios.post('https://atplc20.pythonanywhere.com/my-courses', {
-                Username: JSON.parse(localStorage.getItem('user')).username,
+            const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/my-courses`, {
+                Username: JSON.parse(localStorage.getItem('user')).userId,
             });
             setMyCourses(data);
             localStorage.setItem('courses', JSON.stringify(data))
