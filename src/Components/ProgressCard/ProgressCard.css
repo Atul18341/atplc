@@ -1,0 +1,57 @@
+.card {
+    background: var(--bg);
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: .5rem;
+    flex-shrink: 0;
+    min-width: 30rem;
+    transition: .3s;
+}
+
+.card:hover {
+    transform: scale(1.005);
+    box-shadow: 0 1rem 5rem -3rem var(--button-color);
+}
+
+
+.card .card-top {
+    padding: 1rem;
+}
+
+.card-top .icon {
+    padding: 1rem;
+    width: fit-content;
+    background: var(--button-color);
+    border-radius: .3rem;
+    color: var(--black);
+    user-select: none;
+}
+
+.card-top .icon i {
+    margin-top: 0;
+    font-size: var(--heading);
+}
+
+.card .card-middle {
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+
+.card-middle .middle-left-part {
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.middle-left-part .card-heading {
+    font-size: var(--large-font);
+}
+
+.middle-left-part .card-heading {
+    font-size: var(--medium-font);
+}
+
+.card-score {
+    font-size: var(--large-font);
+    font-weight: 800;
+}
