@@ -1,9 +1,8 @@
 import React from 'react'
-import { Link, } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './Navbar.css'
 
 export default function Navbar({ hamburgerStatus, setHamburgerStatus }) {
-
 
     const handleLinkClick = () => {
         window.scrollTo(0, 0)
@@ -50,7 +49,7 @@ export default function Navbar({ hamburgerStatus, setHamburgerStatus }) {
                     </Link>
                 </li>
                 <li className="nav-items">
-                    <Link onClick={() => { scrollTo('#footer') }} to="#" className="nav-links">
+                    <Link to="/" onClick={() => { scrollTo('#feedback') }} className="nav-links">
                         <div className="icon">
                             <i className="fi fi-rr-comment"></i>
                         </div>
