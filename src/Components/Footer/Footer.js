@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import './Footer.css';
 
+
 export default function Footer() {
     const date = new Date();
     return (
@@ -97,6 +98,14 @@ export default function Footer() {
                             </a>
                         </div>
                         <div className="social-links">
+                            <a href="https://t.me/atplc" target="_blank" rel="noreferrer">
+                                <div className="icon">
+                                    <i className="fi fi-brands-telegram"></i>
+                                </div>
+                                <div className="text">Telegram</div>
+                            </a>
+                        </div>
+                        <div className="social-links">
                             <a href="https://www.facebook.com/people/ATPLC/100063604494243/" target="_blank" rel="noreferrer">
                                 <div className="icon">
                                     <i className="fi fi-brands-facebook"></i>
@@ -114,9 +123,19 @@ export default function Footer() {
                         </div>
                     </div>
                 </div>
+                <div className="footer-image">
+                    <img src="/Assets/Illustrator/footer-character.png" alt="character" />
+                </div>
             </div>
             <div className="copyright">
-                Copyright by ATPLC &copy; {date.getFullYear()}
+                <p>
+                    Copyright &copy; {date.getFullYear()} ATPLC. All rights reserved.
+                </p>
+                <div className="credit">
+                    <a href='https://github.com/Rahulkumar703' target='_blank' rel="noreferrer">
+                        Frontend Developer <span>Devil</span>
+                    </a>
+                </div>
             </div>
         </footer>
     )

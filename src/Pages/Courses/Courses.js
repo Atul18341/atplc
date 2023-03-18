@@ -12,9 +12,8 @@ export default function Courses() {
     const [courses, setCourses] = useState([]);
 
 
-
-
     useEffect(() => {
+        window.scrollTo(0, 0)
         fetchCourses();
     }, [])
 
@@ -31,6 +30,7 @@ export default function Courses() {
             setIsLoading(false);
         }
     }
+
 
 
     return (

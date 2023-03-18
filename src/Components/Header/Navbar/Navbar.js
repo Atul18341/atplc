@@ -4,8 +4,9 @@ import './Navbar.css'
 
 export default function Navbar({ hamburgerStatus, setHamburgerStatus }) {
 
+
     const handleLinkClick = () => {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
         setHamburgerStatus(false)
     }
     const scrollTo = (elementId) => {

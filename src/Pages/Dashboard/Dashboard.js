@@ -18,11 +18,16 @@ export default function Dashboard() {
     const [taskData, setTaskData] = useState([]);
     const [completedTask, setCompletedTask] = useState(0);
 
+
     useEffect(() => {
         if (!localStorage.getItem('user')) {
             navigate('/login', { replace: true })
         }
     }, [navigate])
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     useEffect(() => {
         if (taskData?.Submissions) {
@@ -86,7 +91,7 @@ export default function Dashboard() {
                             {
                                 taskData?.Tasks?.map(task => {
                                     const submittedTask = taskData.Submissions?.find(sub => {
-                                        return sub.Task_No_id === task.Task_No;
+                                        return sub.Task_No_id === task.id;
                                     });
                                     return (
                                         <TaskCard
@@ -94,10 +99,12 @@ export default function Dashboard() {
                                             sub={submittedTask}
                                             courseId={location.state.id}
                                             Task_No={task.Task_No}
+                                            Task_Id={task.id}
                                             Task_Topic={task.Task_Topic}
                                             Task_Content={task.Task_Content}
                                             Task_Status={submittedTask?.Task_Status || ''}
                                             Code_Link={submittedTask?.Code_Link || ''}
+                                            Output_Link={submittedTask?.Output_Link || ''}
                                             Remarks={submittedTask?.Remarks || ''}
                                         />
                                     )
@@ -118,14 +125,20 @@ export default function Dashboard() {
                                 </div>
                                 <div className="current-percentage">
                                     <p>Current Percentage = <span className={`${(completedTask / taskData.Tasks?.length * 100) >= 75 ? 'success' : 'danger'}`}>{(completedTask / taskData.Tasks?.length * 100).toFixed(2)}%</span></p>
-                                    {
-                                        (completedTask / taskData.Tasks?.length * 100) >= 75
-                                            ?
-                                            <Button icon='fi fi-rr-cloud-download-alt' label='Download Certificate' className={'certificate-download-btn'} />
-                                            :
-                                            <Button icon='fi fi-rr-template' label='Dummy Certificate' className={'certificate-view-btn'} />
-                                    }
                                 </div>
+                                {
+                                    (completedTask / taskData.Tasks?.length * 100) >= 75
+                                        ?
+                                        <div className="certificate-download">
+                                            <a href={'/Assets/Images/demoCertificate.jpg'} download='ATPLC_Dummy_Certificate' target={'_blank'} rel="noreferrer">
+                                                <Button icon='fi fi-rr-template' label='Download Certificate' />
+                                            </a>
+                                        </div>
+                                        :
+                                        <div className="dummy-certificate-img">
+                                            <img src="/Assets/Images/demoCertificateBlured.png" alt="Demo_Certificate" />
+                                        </div>
+                                }
                             </div>
                         </section>
 

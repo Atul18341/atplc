@@ -1,17 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './CourseCard.css'
 
 export default function CourseCard({ id, courseName, courseDuration, coverImage, courseCompletionStatus }) {
 
 
+
+    const [isEnrolled, setIsEnrolled] = useState(false);
+
+
+    useEffect(() => {
+        const enrolledCourses = JSON.parse(localStorage.getItem('courses')).map(course => course.Course_id);
+        enrolledCourses.forEach(enrolledCourseId => {
+            if (enrolledCourseId === id)
+                setIsEnrolled(true)
+        })
+    }, [id])
+
+
     return (
         <div className='course-card'>
             <div className="course-cover">
                 <div className='cover-image'>
+                    {console.log(coverImage)}
                     {
-                        coverImage ?
-                            <img src={`${process.env.REACT_APP_BACKEND_PATH}/${coverImage}`} alt="course thumbnail" />
+                        coverImage && coverImage !== '/media/' ?
+                            <img src={`${process.env.REACT_APP_BACKEND_PATH}${coverImage}`} alt="course thumbnail" />
                             :
                             <div className='cover-default-image'> {'</>'}</div>
                     }
@@ -34,7 +48,7 @@ export default function CourseCard({ id, courseName, courseDuration, coverImage,
                 }
                 <div className="course-card-buttons">
                     {
-                        courseDuration === 0 ?
+                        isEnrolled ?
                             <Link tabIndex={0} to={`/my-courses/${courseName}`} state={{ id, courseName }} className="course-card-btn">
                                 <div className="icon">
                                     <i className="fi fi-rr-dashboard"></i>
@@ -48,6 +62,7 @@ export default function CourseCard({ id, courseName, courseDuration, coverImage,
                                 </div>
                                 <div className="text">Enroll Now</div>
                             </Link>
+
                     }
                 </div>
             </div>
