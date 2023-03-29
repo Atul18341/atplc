@@ -36,6 +36,9 @@ export default function Courses() {
     return (
 
         <section className='page courses-page'>
+            <div className="page-thumbnail">
+                <img src="/Assets/Illustrator/training-page.jpg" alt="training" />
+            </div>
             <div className="page-heading">
                 <h3>Courses</h3>
             </div>
@@ -49,6 +52,8 @@ export default function Courses() {
                                 courseName={course.Course_Name}
                                 courseDuration={course.Course_Duration}
                                 coverImage={course.Course_Thumbnail}
+                                couresPrice={course.Course_Price}
+                                courseTechnologies={course.Course_Technologies}
                             />
                         })}
                     </div>
