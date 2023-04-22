@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import '../CommonPage.css'
 import './Dashboard.css'
@@ -9,9 +9,13 @@ import Loader from '../../Components/Loader/Loader'
 import Error from '../Error/Error'
 import CourseFeedback from '../../Components/Feedback/CouseFeedback/CourseFeedback'
 import Certificate from '../../Components/Certificate/Certificate'
+import { WhatsappShareButton, WhatsappIcon, LinkedinShareButton, LinkedinIcon } from 'react-share'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
 export default function Dashboard() {
-    const location = useLocation();
+
+    const params = useParams();
+
     const navigate = useNavigate();
     const [error, setError] = useState('');
 
@@ -27,8 +31,10 @@ export default function Dashboard() {
     }, [navigate])
 
     useEffect(() => {
+        document.title = `Dashboard | ${params?.courseName}`
+        document.getElementsByTagName("META")[2].content = 'All things at one place for your selected course.'
         window.scrollTo(0, 0);
-    }, [])
+    }, [params?.courseName])
 
     useEffect(() => {
         if (taskData?.Submissions) {
@@ -47,20 +53,27 @@ export default function Dashboard() {
             try {
                 setIsloading(true);
                 const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/dashboard`, {
-                    course: location.state.id,
+                    course: params?.id,
                     Username: JSON.parse(localStorage.getItem('user')).userId
                 });
                 setTaskData(data);
             } catch (e) {
                 setError(e);
-                console.log(e);
             }
             finally {
                 setIsloading(false);
             }
         }
         getTasks();
-    }, [location]);
+    }, [params?.id]);
+
+
+    function copyLink() {
+        const tooltip = document.querySelector('.tooltip');
+        tooltip.innerText = 'copied';
+        tooltip.addEventListener('mouseleave', () => tooltip.innerText = "copy")
+    }
+
 
     return (
         isLoading ?
@@ -68,7 +81,7 @@ export default function Dashboard() {
             :
             <section className='page dashboard-page'>
                 <div className="page-heading">
-                    <h3>{location.state?.courseName}</h3>
+                    <h3>{params?.courseName}</h3>
                 </div>
                 {error === '' ?
                     <div className="page-body">
@@ -88,7 +101,30 @@ export default function Dashboard() {
                         </div>
                         <div className="page-body-heading">
                             <h4>Course Tasks</h4>
+                            <div className="share-work">
+                                <WhatsappShareButton
+                                    title={`My ${params.courseName} Work at ATPLC`}
+                                    url={`https://www.atplc.in/dashboard/${JSON.parse(localStorage.getItem('user')).userId}/${params.id}`}
+                                >
+                                    <WhatsappIcon round={true} size={40} iconFillColor='var(--bg)' />
+                                </WhatsappShareButton>
+                                <LinkedinShareButton
+                                    title={`My ${params.courseName} Work at ATPLC`}
+                                    summary="My all tasks and projects done during Training at @ATPLC"
+                                    source="atplc.in"
+                                    url={`https://www.atplc.in/dashboard/${JSON.parse(localStorage.getItem('user')).userId}/${params.id}`}
+                                >
+                                    <LinkedinIcon round={true} size={40} iconFillColor='var(--bg)' />
+                                </LinkedinShareButton>
+                                <CopyToClipboard text={`https://www.atplc.in/dashboard/${JSON.parse(localStorage.getItem('user')).userId}/${params.id}`} onCopy={(e) => console.log(e)}>
+                                    <button className='copy-link' onClick={copyLink}>
+                                        <i className="fi fi-rr-copy-alt"></i>
+                                        <div className="tooltip">copy</div>
+                                    </button>
+                                </CopyToClipboard>
+                            </div>
                         </div>
+
                         <div className="task-list-container grid">
                             {
                                 taskData?.Tasks?.map(task => {
@@ -99,7 +135,7 @@ export default function Dashboard() {
                                         <TaskCard
                                             key={task.Task_No}
                                             sub={submittedTask}
-                                            courseId={location.state.id}
+                                            courseId={params?.id}
                                             Task_No={task.Task_No}
                                             Task_Id={task.id}
                                             Task_Topic={task.Task_Topic}
@@ -115,14 +151,20 @@ export default function Dashboard() {
                         </div>
 
                         <CourseFeedback />
-                        <Certificate completedTask={completedTask} totalTask={taskData?.Tasks.length} />
+
+                        <Certificate
+                            completedTask={completedTask}
+                            totalTask={taskData?.Tasks.length}
+                            courseName={params?.courseName}
+                            courseId={params?.id}
+                        />
 
 
                     </div>
                     :
                     <Error error={error} />
                 }
-            </section>
+            </section >
 
     )
 }
