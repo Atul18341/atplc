@@ -90,7 +90,7 @@ export default function CourseCard({ id, courseName, courseDuration, coverImage,
                                 <div className="icon">
                                     <i className="fi fi-rr-file-signature"></i>
                                 </div>
-                                <div className="text" onClick={(e)=>window.location.href="https://lyss.in/payment"}>Enroll Now</div>
+                                <div className="text" onClick={(e)=>window.location.href="https://lyss.in/payment"}>Proceed to Pay</div>
                             </Link>
 
                     }
