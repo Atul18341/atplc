@@ -85,12 +85,12 @@ export default function CourseCard({ id, courseName, courseDuration, coverImage,
                                 </div>
                                 <div className="text">Continue to Dashboard</div>
                             </Link>
-                            :
-                            <Link tabIndex={0} to={`/enroll/${courseName}`} className="course-card-btn">
+                            ://to={`/enroll/${courseName}`}
+                            <Link tabIndex={0}  className="course-card-btn">
                                 <div className="icon">
                                     <i className="fi fi-rr-file-signature"></i>
                                 </div>
-                                <div className="text">Enroll Now</div>
+                                <div className="text" onClick={(e)=>window.location.href="https://lyss.in/payment"}>Enroll Now</div>
                             </Link>
 
                     }
