@@ -17,29 +17,14 @@
 
 .button:hover {
     color: var(--primary);
-    background: transparent;
+    background: var(--bg);
     border: .1rem solid var(--primary);
     box-shadow: 0 1rem 2rem -1rem var(--black);
 }
-
-
-
-
-
-header.active .button {
-    color: var(--text);
+.button:disabled {
+    background: var(--bg);
+    box-shadow: 0 1rem 2rem -1rem var(--black);
 }
-
-
-
-header.active .button .text,
-header.active .button .icon i {
-    color: var(--white);
-}
-
-
-
-
 
 .button .text {
     display: grid;
@@ -57,10 +42,19 @@ header.active .button .icon i {
     font-size: var(--medium-font);
 }
 
-.button:hover .text,
-.button:hover .icon i {
-    color: var(--primary);
+.button:disabled .icon i,
+.button:disabled .text,
+.button:disabled:hover .icon i,
+.button:disabled:hover .text{
+    color: rgb(83, 83, 83);
 }
+
+
+.button:disabled:hover {
+    cursor: not-allowed;
+    border: .1rem solid transparent;
+}
+
 
 .button .loader-spin {
     animation: spin 3s ease infinite;

@@ -2,8 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import './Account.css'
 import Button from '../Button/Button';
+import { useAuth } from '../../context/authContext';
+import { toast } from 'react-toastify';
 
 export default function Account({ accountRef, setHamburgerStatus }) {
+
+    const { user, logout } = useAuth();
 
     const [popUpStatus, setPopUpStatus] = useState(false);
     const popUpRef = useRef();
@@ -19,10 +23,17 @@ export default function Account({ accountRef, setHamburgerStatus }) {
     const togglePopUp = () => {
         setPopUpStatus(!popUpStatus);
     }
-    const logOut = async () => {
-        localStorage.removeItem('user')
-        localStorage.removeItem('courses')
-        navigate('/', { replace: true });
+
+    const handleLogOut = async () => {
+        try {
+            const res = await logout();
+            toast[res.type](res.message)
+            if (res.success) {
+                navigate('/')
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.response || error?.message)
+        }
 
     }
 
@@ -34,30 +45,30 @@ export default function Account({ accountRef, setHamburgerStatus }) {
     return (
         <div className="account" ref={accountRef}>
             {
-                JSON.parse(localStorage.getItem('user'))
+                user
                     ?
                     <>
                         <div className="header-profile row" ref={popUpRef} onClick={togglePopUp}>
                             <div className="profile-pic">
                                 {
-                                    JSON.parse(localStorage.getItem('user'))?.fullName
+                                    user?.fullName
                                         ?
-                                        JSON.parse(localStorage.getItem('user'))?.fullName[0]
+                                        user?.fullName[0]
                                         : ''
                                 }
                             </div>
                             <div className="profile-details col">
                                 <div className="profile-name">
                                     {
-                                        JSON.parse(localStorage.getItem('user'))?.fullName
+                                        user?.fullName
                                             ?
-                                            JSON.parse(localStorage.getItem('user'))?.fullName?.split(' ')[0]
+                                            user?.fullName?.split(' ')[0]
                                             : ''
                                     }
                                 </div>
                                 <div className="profile-email">
                                     {
-                                        JSON.parse(localStorage.getItem('user'))?.email || ''
+                                        user?.email || ''
                                     }
                                 </div>
                             </div>
@@ -68,7 +79,7 @@ export default function Account({ accountRef, setHamburgerStatus }) {
                                     <div className="icon">
                                         <i className="fi fi-rr-id-badge"></i>
                                     </div>
-                                    <div className="text">{JSON.parse(localStorage.getItem('user'))?.username}</div>
+                                    <div className="text">{user?.username}</div>
                                 </li>
                                 <li>
                                     <Link to="/profile" onClick={scrollToTop} >
@@ -88,7 +99,7 @@ export default function Account({ accountRef, setHamburgerStatus }) {
                                         </div>
                                     </Link>
                                 </li>
-                                <li onClick={logOut}>
+                                <li onClick={handleLogOut}>
                                     <div className="icon">
                                         <i className="fi fi-rr-sign-out-alt"></i>
                                     </div>

@@ -4,9 +4,12 @@ import './Profile.css'
 import Loader from '../../Components/Loader/Loader'
 import Input from '../../Controller/Input/Input'
 import Button from '../../Components/Button/Button'
+import { useAuth } from '../../context/authContext'
 
 
 export default function Profile() {
+
+    const { user } = useAuth();
 
     const [isLoading, setIsLoading] = useState(true);
     const [message, setMessage] = useState('');
@@ -33,47 +36,6 @@ export default function Profile() {
         }
     }
 
-
-    const getProfile = async () => {
-        setIsLoading(true);
-        try {
-            const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/profile`, {
-                Username: JSON.parse(localStorage.getItem('user')).userId,
-            })
-            setProfile(data.response[0]);
-            const localUser = JSON.parse(localStorage.getItem('user'));
-
-            if (localUser.college === '') {
-                localUser.college = data?.response.length
-                    ?
-                    profile.data?.response[0]?.College_Name
-                    :
-                    "";
-            }
-            if (localUser.fullName === '') {
-                localUser.fullName = data?.response.length
-                    ?
-                    profile.data?.response[0]?.Name
-                    :
-                    "";
-            }
-
-
-            localStorage.setItem('user', JSON.stringify(localUser))
-
-        } catch (error) {
-            console.log(error);
-            setMessage(error?.response?.statusText || error.message)
-        }
-        finally {
-            setIsLoading(false);
-        }
-
-    }
-
-    useEffect(() => {
-        getProfile();
-    }, [])
 
     const handelImageUpload = (e) => {
         const image = e.target.files[0];
@@ -131,7 +93,7 @@ export default function Profile() {
                             <Input
                                 id='full-name'
                                 label='Name'
-                                value={profile?.Name}
+                                value={user?.Name}
                                 name='Name'
                                 icon='fi fi-rr-id-card-clip-alt'
                                 onChange={handelChange}
@@ -141,7 +103,7 @@ export default function Profile() {
                             <Input
                                 id='college'
                                 label='College'
-                                value={profile?.College_Name}
+                                value={user?.College_Name}
                                 name='College_Name'
                                 icon='fi fi-rr-graduation-cap'
                                 onChange={handelChange}
@@ -151,7 +113,7 @@ export default function Profile() {
                             <Input
                                 id='branch'
                                 label='Branch'
-                                value={profile?.Branch}
+                                value={user?.Branch}
                                 name='Branch'
                                 icon='fi fi-rr-code-branch'
                                 onChange={handelChange}
@@ -159,7 +121,7 @@ export default function Profile() {
                             <Input
                                 id='batch'
                                 label='Batch'
-                                value={profile?.Batch}
+                                value={user?.Batch}
                                 name='Batch'
                                 icon='fi fi-rr-badge'
                                 onChange={handelChange}
@@ -169,7 +131,7 @@ export default function Profile() {
                             <Input
                                 id='hometown'
                                 label='Hometown'
-                                value={profile?.Hometown}
+                                value={user?.Hometown}
                                 name='Hometown'
                                 icon='fi fi-rr-house-building'
                                 onChange={handelChange}
@@ -177,7 +139,7 @@ export default function Profile() {
                             <Input
                                 id='contact-no'
                                 label='Contact No'
-                                value={profile?.Contact_No}
+                                value={user?.Contact_No}
                                 name='Contact_No'
                                 icon='fi fi-rr-mobile-notch'
                                 onChange={handelChange}

@@ -1,38 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './Theme.css'
+import { useTheme } from '../../context/themeContext'
 
 export default function Theme() {
-    const [isDarkTheme, setIsDarkTheme] = useState(setTheme());
 
-    function setTheme() {
-        if (localStorage.getItem('isDarkTheme')) {
-            return JSON.parse(localStorage.getItem('isDarkTheme'));
-        }
-        else return window.matchMedia("(prefers-color-scheme: dark)").matches;
-    }
-
-    const setDarkTheme = () => {
-        setIsDarkTheme(true);
-        localStorage.setItem('isDarkTheme', true);
-    }
-    const setLightTheme = () => {
-        setIsDarkTheme(false);
-        localStorage.setItem('isDarkTheme', false);
-    }
-
-
-    useEffect(() => {
-        if (isDarkTheme) {
-            document.body.classList.add('dark');
-        }
-        else document.body.classList.remove('dark');
-    }, [isDarkTheme])
+    const { theme, setLightTheme, setDarkTheme } = useTheme();
 
 
     return (
         <div className="theme">
             {
-                isDarkTheme ?
+                theme === 'dark' ?
                     <span className="icon" onClick={setLightTheme}>
                         <i className="fi fi-rr-clouds-sun"></i>
                     </span>

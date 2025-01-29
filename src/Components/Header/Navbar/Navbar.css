@@ -32,10 +32,10 @@
     transition: .3s;
 }
 
-.header.active .nav-links .icon i,
+/* .header.active .nav-links .icon i,
 .header.active .nav-links .text {
     color: var(--white);
-}
+} */
 
 
 .header .nav-links .icon i,
