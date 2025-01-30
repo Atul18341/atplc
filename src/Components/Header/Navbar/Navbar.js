@@ -14,49 +14,60 @@ export default function Navbar({ hamburgerStatus, setHamburgerStatus }) {
         element.scrollIntoView(elementId)
     }
 
+    const navlinks = [
+        {
+            icon: 'fi fi-rr-home',
+            label: 'Home',
+            href: '/',
+            onclick: handleLinkClick
+        },
+        {
+            icon: 'fi fi-rr-book',
+            label: 'Courses',
+            href: '/courses',
+            onclick: handleLinkClick
+        },
+        {
+            icon: 'fi fi-rr-calendar-star',
+            label: 'Events',
+            href: '/events',
+            onclick: handleLinkClick
+        },
+        // {
+        //     icon: 'fi fi-rr-layout-fluid',
+        //     label: 'Gallery',
+        //     href: '/gallery',
+        //     onclick: handleLinkClick
+        // },
+        {
+            icon: 'fi fi-rr-comment',
+            label: 'Feedback',
+            href: '/feedbacks',
+            onclick: handleLinkClick
+        },
+        {
+            icon: 'fi fi-rr-info',
+            label: 'About',
+            href: '/#footer',
+            onclick: () => { scrollTo('#footer') }
+        },
+    ]
+
     return (
         <nav className={`navbar ${hamburgerStatus ? 'active' : ''}`}>
             <ul className="nav-list">
-                <li className="nav-items">
-                    <Link onClick={handleLinkClick} to="/" className="nav-links">
-                        <div className="icon">
-                            <i className="fi fi-rr-home"></i>
-                        </div>
-                        <div className="text">Home</div>
-                    </Link>
-                </li>
-                <li className="nav-items">
-                    <Link onClick={() => { scrollTo('#footer') }} to="#" className="nav-links">
-                        <div className="icon">
-                            <i className="fi fi-rr-info"></i>
-                        </div>
-                        <div className="text">About</div>
-                    </Link>
-                </li>
-                <li className="nav-items">
-                    <Link onClick={handleLinkClick} to="/events" className="nav-links">
-                        <div className="icon">
-                            <i className="fi fi-rr-calendar-star"></i>
-                        </div>
-                        <div className="text">Events</div>
-                    </Link>
-                </li>
-                <li className="nav-items">
-                    <Link onClick={handleLinkClick} to="/gallery" className="nav-links">
-                        <div className="icon">
-                            <i className="fi fi-rr-layout-fluid"></i>
-                        </div>
-                        <div className="text">Gallery</div>
-                    </Link>
-                </li>
-                <li className="nav-items">
-                    <Link to="/feedbacks" className="nav-links">
-                        <div className="icon">
-                            <i className="fi fi-rr-comment"></i>
-                        </div>
-                        <div className="text">Feedback</div>
-                    </Link>
-                </li>
+                {
+                    navlinks.map((link, index) => (
+                        <li key={index} className="nav-items">
+                            <Link onClick={link.onclick} to={link.href} className="nav-links">
+                                <div className="icon">
+                                    <i className={link.icon}></i>
+                                </div>
+                                <div className="text">{link.label}</div>
+                            </Link>
+                        </li>
+                    ))
+                }
             </ul>
         </nav>
     )

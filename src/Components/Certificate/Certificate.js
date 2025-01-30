@@ -2,10 +2,6 @@ import { PDFDocument, degrees, rgb, StandardFonts, fontkit } from 'pdf-lib'
 import Button from '../Button/Button'
 import './Certificate.css'
 import { useEffect, useState } from 'react'
-import Loader from '../Loader/Loader'
-
-
-
 
 
 export default function Certificate({ completedTask, totalTask, courseName, courseId }) {

@@ -1,83 +1,44 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import './Profile.css'
 import Loader from '../../Components/Loader/Loader'
 import Input from '../../Controller/Input/Input'
 import Button from '../../Components/Button/Button'
+import { useAuth } from '../../context/authContext'
+import { toast } from 'react-toastify'
 
 
 export default function Profile() {
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [message, setMessage] = useState('');
-    const [profile, setProfile] = useState({});
+    const { user, updateProfile } = useAuth();
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [showUpdateBtn, setShowUpdateBtn] = useState(false);
+    const [profile, setProfile] = useState(user);
 
     useEffect(() => {
         document.title = "ATPLC | Profile"
         document.getElementsByTagName("META")[2].content = 'Update your Profile to be get updated.'
         window.scrollTo(0, 0);
-    }, [])
+        setProfile(user);
+    }, [user])
 
     const changePersonalInfo = async (e) => {
         setIsLoading(true);
         e.preventDefault();
         try {
-            const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_PATH}/profile`, profile);
-            setMessage(data?.Response);
-        }
-        catch (error) {
-            setMessage(error?.response?.statusText || error.message)
-        }
-        finally {
-            setIsLoading(false);
-        }
-    }
-
-
-    const getProfile = async () => {
-        setIsLoading(true);
-        try {
-            const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/profile`, {
-                Username: JSON.parse(localStorage.getItem('user')).userId,
-            })
-            setProfile(data.response[0]);
-            const localUser = JSON.parse(localStorage.getItem('user'));
-
-            if (localUser.college === '') {
-                localUser.college = data?.response.length
-                    ?
-                    profile.data?.response[0]?.College_Name
-                    :
-                    "";
-            }
-            if (localUser.fullName === '') {
-                localUser.fullName = data?.response.length
-                    ?
-                    profile.data?.response[0]?.Name
-                    :
-                    "";
-            }
-
-
-            localStorage.setItem('user', JSON.stringify(localUser))
-
+            const res = await updateProfile(profile);
+            toast[res.type](res.message);
         } catch (error) {
-            console.log(error);
-            setMessage(error?.response?.statusText || error.message)
-        }
-        finally {
+            toast.error(error?.response?.data?.response || error?.response?.data?.message || error?.message)
+        } finally {
             setIsLoading(false);
         }
-
     }
 
-    useEffect(() => {
-        getProfile();
-    }, [])
 
     const handelImageUpload = (e) => {
+        setShowUpdateBtn(true);
         const image = e.target.files[0];
-
         const imagePreview = URL.createObjectURL(e.target.files[0]);
 
         setProfile({ ...profile, Profile_Pic: image, Profile_Preview: imagePreview });
@@ -85,6 +46,12 @@ export default function Profile() {
     }
 
     const handelChange = (e) => {
+        !showUpdateBtn && setShowUpdateBtn(true);
+        if (e.target.name === 'Contact_No') {
+            if (e.target.value.length > 10) {
+                return toast.error('Contact No should be of 10 digits')
+            }
+        }
         setProfile({ ...profile, [e.target.name]: e.target.value })
     }
 
@@ -120,12 +87,12 @@ export default function Profile() {
                             </div>
                         </div>
 
-                        {
+                        {/* {
                             message !== '' &&
                             <div className="message-box">
                                 {message}
                             </div>
-                        }
+                        } */}
 
                         <div className="update-field">
                             <Input
@@ -175,6 +142,7 @@ export default function Profile() {
                                 onChange={handelChange}
                             />
                             <Input
+                                type='number'
                                 id='contact-no'
                                 label='Contact No'
                                 value={profile?.Contact_No}
@@ -183,7 +151,11 @@ export default function Profile() {
                                 onChange={handelChange}
                             />
                         </div>
-                        <Button icon={"fi fi-rr-refresh"} label="Update Profile" isLoading={isLoading} className='profile-update-btn' type='submit' />
+                        {
+                            showUpdateBtn ?
+                                <Button icon={"fi fi-rr-refresh"} label="Update Profile" isLoading={isLoading} className='profile-update-btn' type='submit' />
+                                : null
+                        }
                     </form>
             }
         </div>

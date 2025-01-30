@@ -69,28 +69,30 @@
     font-weight: 700;
     font-style: italic;
 }
-
 .feedback-card .card-body {
     padding: 1rem 1rem;
-    overflow: hidden;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 1;
-    text-align: justify;
     text-align: center;
 }
 
 .card-body .review {
     font-size: var(--medium-font);
-    text-overflow: ellipsis;
     position: relative;
+    line-height: 1.5em;
     z-index: 2;
     padding: 0 2rem;
-    min-height: 20rem;
-    display: flex;
-    align-items: center;
+    min-height: unset; /* Remove min-height as it might be forcing the container to expand */
+    height: calc(1.5em * 7); /* Set explicit height instead */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
 }
 
 

@@ -56,11 +56,11 @@ function Header() {
                                 </Link>
                             </figure>
                         </div>
-                        <div className="text">
+                        {/* <div className="text">
                             <Link to="/">
                                 <h1>ATPLC</h1>
                             </Link>
-                        </div>
+                        </div> */}
                     </div>
                     <div className={`header-actions ${hamburgerStatus ? 'active' : ''}`} >
                         <Navbar hamburgerStatus={hamburgerStatus} setHamburgerStatus={setHamburgerStatus} />

@@ -21,7 +21,7 @@
 }
 
 .nav-items .nav-links {
-    border-radius: .3rem;
+    border-radius: 10px;
     background: transparent;
     display: flex;
     align-items: center;
@@ -32,10 +32,10 @@
     transition: .3s;
 }
 
-.header.active .nav-links .icon i,
+/* .header.active .nav-links .icon i,
 .header.active .nav-links .text {
     color: var(--white);
-}
+} */
 
 
 .header .nav-links .icon i,

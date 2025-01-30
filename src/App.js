@@ -20,6 +20,9 @@ import Enroll from './Pages/Enroll/Enroll'
 import Feedback from './Pages/Feedback/Feedback';
 import Events from './Pages/Events/Events';
 import PublicDashborad from './Pages/Dashboard/PublicDashboard';
+import { AuthContextProvider } from './context/authContext';
+import { ThemeProvider } from './context/themeContext';
+import CustomToastContainer from './Components/Toast/CustomToastContainer';
 
 function App() {
 
@@ -53,13 +56,15 @@ function App() {
 
   )
 
-
   return (
-    <div className="App">
-
-      <RouterProvider router={router} />
-
-    </div>
+    <ThemeProvider>
+      <AuthContextProvider>
+        <div className="App">
+          <RouterProvider router={router} />
+          <CustomToastContainer />
+        </div>
+      </AuthContextProvider>
+    </ThemeProvider>
   );
 }
 

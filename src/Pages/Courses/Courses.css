@@ -3,11 +3,11 @@
     height: max(25rem, 25vh);
     width: 100%;
     background: var(--white);
-    border-radius: .5rem;
+    border-radius: 10px;
 }
 
 .page-thumbnail img {
-    border-radius: .3rem;
+    border-radius: 10px;
     object-fit: contain;
 }
 

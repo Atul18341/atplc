@@ -86,7 +86,6 @@ export default function Feedback() {
                                 pagination={{
                                     clickable: true,
                                 }}
-
                                 breakpoints={
                                     {
                                         0: {

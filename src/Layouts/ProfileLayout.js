@@ -1,16 +1,29 @@
 import React from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import '../Pages/Profile/Profile.css'
+import { useAuth } from '../context/authContext';
+import { toast } from 'react-toastify';
 
 export default function ProfileLayout() {
 
+    const { logout } = useAuth()
 
     const navigate = useNavigate();
-    const logOut = () => {
-        localStorage.removeItem('user')
-        localStorage.removeItem('courses')
-        navigate('/', { replace: true });
+
+
+    const handleLogOut = async () => {
+        try {
+            const res = await logout();
+            toast[res.type](res.message)
+            if (res.success) {
+                navigate('/')
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.response || error?.message)
+        }
+
     }
+
     return (
         <section className='page profile-page'>
             <div className="section-heading">
@@ -36,7 +49,7 @@ export default function ProfileLayout() {
                             Change Password
                         </div>
                     </NavLink>
-                    <NavLink to="/" className={({ isActive }) => isActive ? "sidebar-links logout active" : "sidebar-links logout"} onClick={logOut}>
+                    <NavLink to="/" className={({ isActive }) => isActive ? "sidebar-links logout active" : "sidebar-links logout"} onClick={handleLogOut}>
                         <div className="icon">
                             <i className="fi fi-rr-sign-out-alt"></i>
                         </div>

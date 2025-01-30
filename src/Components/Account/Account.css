@@ -7,7 +7,7 @@
     gap: 1rem;
     cursor: pointer;
     padding: .5rem;
-    border-radius: .5rem;
+    border-radius: 10px;
 }
 
 .header-profile .profile-pic {
@@ -48,7 +48,7 @@
     right: .5rem;
     background: var(--bg-light);
     padding: 1rem 0;
-    border-radius: .5rem;
+    border-radius: 10px;
     visibility: hidden;
     transform: translateY(50%);
     transition: visiblity .3s, transform .1s;

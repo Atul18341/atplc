@@ -2,7 +2,7 @@
     background: var(--bg);
     gap: 1rem;
     padding: 1rem;
-    border-radius: .5rem;
+    border-radius: 10px;
     flex-shrink: 0;
     min-width: 30rem;
     transition: .3s;
@@ -22,7 +22,7 @@
     padding: 1rem;
     width: fit-content;
     background: var(--button-color);
-    border-radius: .3rem;
+    border-radius: 10px;
     color: var(--black);
     user-select: none;
 }

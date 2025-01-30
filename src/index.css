@@ -24,6 +24,7 @@
   --large-font: 2rem;
   --heading: 2.5rem;
   --hover: rgba(0, 0, 0, 0.1);
+  --shadow: #0000003f;
 }
 
 *,
