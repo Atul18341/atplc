@@ -11,7 +11,7 @@
 
 .theme .icon {
     cursor: pointer;
-    padding: 1rem;
+    padding: 1.5rem;
     border-radius: 50%;
     font-size: var(--large-font);
     user-select: none;

@@ -26,7 +26,7 @@ export default function Login() {
     }, [])
 
     useEffect(() => {
-        if (user?.userId) {
+        if (user?.id) {
             navigate('/', { replace: true });
         }
     }, [navigate, user])
@@ -48,8 +48,8 @@ export default function Login() {
                     login(Username, Password),
                     {
                         pending: 'Please wait while we checking your credentials.',
-                        success: 'Looks like you are authentic',
-                        error: 'Opps ! Somthing went wrong.'
+                        // success: 'Looks like you are authentic',
+                        // error: 'Opps ! Somthing went wrong.'
                     }
                 )
 

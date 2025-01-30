@@ -11,10 +11,12 @@ import CourseFeedback from '../../Components/Feedback/CouseFeedback/CourseFeedba
 import Certificate from '../../Components/Certificate/Certificate'
 import { WhatsappShareButton, WhatsappIcon, LinkedinShareButton, LinkedinIcon } from 'react-share'
 import CopyToClipboard from 'react-copy-to-clipboard'
+import { useAuth } from '../../context/authContext'
 
 export default function Dashboard() {
 
     const params = useParams();
+    const { user } = useAuth()
 
     const navigate = useNavigate();
     const [error, setError] = useState('');
@@ -25,10 +27,11 @@ export default function Dashboard() {
 
 
     useEffect(() => {
-        if (!localStorage.getItem('user')) {
+        if (!user) {
+            console.log(user)
             navigate('/login', { replace: true })
         }
-    }, [navigate])
+    }, [user, navigate])
 
     useEffect(() => {
         document.title = `Dashboard | ${params?.courseName}`

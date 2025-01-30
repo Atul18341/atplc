@@ -133,7 +133,7 @@ export default function Footer() {
                 </p>
                 <div className="credit">
                     <a href='https://github.com/Rahulkumar703' target='_blank' rel="noreferrer">
-                        Frontend Developer <span>Devil</span>
+                        Frontend Developer <span>Rahul</span>
                     </a>
                 </div>
             </div>

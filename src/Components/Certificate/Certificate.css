@@ -28,7 +28,7 @@
     font-weight: bold;
     background: var(--bg);
     padding: .2rem .5rem;
-    border-radius: .3rem;
+    border-radius: 10px;
 }
 
 .section-body .current-percentage {
@@ -42,7 +42,7 @@
 .section-body .current-percentage span {
     padding: .5rem 1rem;
     font-weight: bold;
-    border-radius: .3rem;
+    border-radius: 10px;
     color: var(--black);
 }
 
@@ -59,7 +59,7 @@
 
 .section-body .dummy-certificate-img img {
     width: 50%;
-    border-radius: .5rem;
+    border-radius: 10px;
 }
 
 

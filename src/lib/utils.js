@@ -9,6 +9,7 @@ export function setCookie(name, value, options = {}) {
         expires: 7,              // 7 days by default
         secure: true,            // Only transmitted over HTTPS
         sameSite: 'Strict'       // Protection against CSRF
+
     };
 
     const cookieOptions = { ...defaultOptions, ...options };

@@ -17,7 +17,7 @@
 
 .gallery-grid .tilt-container {
     border: .3rem solid var(--primary);
-    border-radius: .3rem;
+    border-radius: 10px;
 }
 
 

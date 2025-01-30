@@ -18,7 +18,7 @@
     place-items: center;
     background: var(--bg);
     flex: 1;
-    border-radius: .3rem;
+    border-radius: 10px;
     font-size: var(--large-font);
     color: var(--text);
     transition: .3s;
