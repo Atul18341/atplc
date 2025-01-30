@@ -1,45 +1,44 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import './Profile.css'
 import Loader from '../../Components/Loader/Loader'
 import Input from '../../Controller/Input/Input'
 import Button from '../../Components/Button/Button'
 import { useAuth } from '../../context/authContext'
+import { toast } from 'react-toastify'
 
 
 export default function Profile() {
 
-    const { user } = useAuth();
+    const { user, updateProfile } = useAuth();
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [message, setMessage] = useState('');
-    const [profile, setProfile] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [showUpdateBtn, setShowUpdateBtn] = useState(false);
+    const [profile, setProfile] = useState(user);
 
     useEffect(() => {
         document.title = "ATPLC | Profile"
         document.getElementsByTagName("META")[2].content = 'Update your Profile to be get updated.'
         window.scrollTo(0, 0);
-    }, [])
+        setProfile(user);
+    }, [user])
 
     const changePersonalInfo = async (e) => {
         setIsLoading(true);
         e.preventDefault();
         try {
-            const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_PATH}/profile`, profile);
-            setMessage(data?.Response);
-        }
-        catch (error) {
-            setMessage(error?.response?.statusText || error.message)
-        }
-        finally {
+            const res = await updateProfile(profile);
+            toast[res.type](res.message);
+        } catch (error) {
+            toast.error(error?.response?.data?.response || error?.response?.data?.message || error?.message)
+        } finally {
             setIsLoading(false);
         }
     }
 
 
     const handelImageUpload = (e) => {
+        setShowUpdateBtn(true);
         const image = e.target.files[0];
-
         const imagePreview = URL.createObjectURL(e.target.files[0]);
 
         setProfile({ ...profile, Profile_Pic: image, Profile_Preview: imagePreview });
@@ -47,6 +46,12 @@ export default function Profile() {
     }
 
     const handelChange = (e) => {
+        !showUpdateBtn && setShowUpdateBtn(true);
+        if (e.target.name === 'Contact_No') {
+            if (e.target.value.length > 10) {
+                return toast.error('Contact No should be of 10 digits')
+            }
+        }
         setProfile({ ...profile, [e.target.name]: e.target.value })
     }
 
@@ -82,18 +87,18 @@ export default function Profile() {
                             </div>
                         </div>
 
-                        {
+                        {/* {
                             message !== '' &&
                             <div className="message-box">
                                 {message}
                             </div>
-                        }
+                        } */}
 
                         <div className="update-field">
                             <Input
                                 id='full-name'
                                 label='Name'
-                                value={user?.Name}
+                                value={profile?.Name}
                                 name='Name'
                                 icon='fi fi-rr-id-card-clip-alt'
                                 onChange={handelChange}
@@ -103,7 +108,7 @@ export default function Profile() {
                             <Input
                                 id='college'
                                 label='College'
-                                value={user?.College_Name}
+                                value={profile?.College_Name}
                                 name='College_Name'
                                 icon='fi fi-rr-graduation-cap'
                                 onChange={handelChange}
@@ -113,7 +118,7 @@ export default function Profile() {
                             <Input
                                 id='branch'
                                 label='Branch'
-                                value={user?.Branch}
+                                value={profile?.Branch}
                                 name='Branch'
                                 icon='fi fi-rr-code-branch'
                                 onChange={handelChange}
@@ -121,7 +126,7 @@ export default function Profile() {
                             <Input
                                 id='batch'
                                 label='Batch'
-                                value={user?.Batch}
+                                value={profile?.Batch}
                                 name='Batch'
                                 icon='fi fi-rr-badge'
                                 onChange={handelChange}
@@ -131,21 +136,26 @@ export default function Profile() {
                             <Input
                                 id='hometown'
                                 label='Hometown'
-                                value={user?.Hometown}
+                                value={profile?.Hometown}
                                 name='Hometown'
                                 icon='fi fi-rr-house-building'
                                 onChange={handelChange}
                             />
                             <Input
+                                type='number'
                                 id='contact-no'
                                 label='Contact No'
-                                value={user?.Contact_No}
+                                value={profile?.Contact_No}
                                 name='Contact_No'
                                 icon='fi fi-rr-mobile-notch'
                                 onChange={handelChange}
                             />
                         </div>
-                        <Button icon={"fi fi-rr-refresh"} label="Update Profile" isLoading={isLoading} className='profile-update-btn' type='submit' />
+                        {
+                            showUpdateBtn ?
+                                <Button icon={"fi fi-rr-refresh"} label="Update Profile" isLoading={isLoading} className='profile-update-btn' type='submit' />
+                                : null
+                        }
                     </form>
             }
         </div>

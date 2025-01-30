@@ -16,14 +16,20 @@
     justify-content: center;
     text-align: center;
     gap: 1rem;
-    background: var(--primary);
+    /* background: var(--primary); */
     padding: 1rem;
-    border-radius: .3rem;
+    border-radius: 10px;
     font-size: var(--medium-font);
     font-family: 'Poppins', sans-serif;
-    color: var(--white);
+    color: var(--text);
+    box-shadow: 3px 5px 10px 0px var(--shadow);
+    transition: background .3s ease-in-out;
 }
 
+.counter:hover {
+    color: var(--white);
+    background: var(--primary);
+}
 
 .counter .icon {
     padding: 1rem;

@@ -47,13 +47,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: .3rem;
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
+    box-shadow: 5px 10px 10px -5px var(--shadow);
 }
 
 .card-container .facility-card:hover h3 {
     transform: scale(1.5);
+    color: var(--white);
 }
 
 .card-container .facility-card:hover img {
@@ -65,7 +67,7 @@
     transition: .3s;
     z-index: 1;
     font-size: var(--heading);
-    color: var(--white);
+    color: var(--text);
 }
 
 
@@ -73,11 +75,11 @@
     position: absolute;
     object-position: center;
     object-fit: contain;
-    opacity: .3;
+    opacity: .6;
     transition: .3s;
 }
 
-.card-container .facility-card.training {
+.card-container .facility-card.training:hover {
     background: var(--primary);
 
 }
@@ -91,7 +93,7 @@
     transform: scale(1.5);
 }
 
-.card-container .facility-card.internship {
+.card-container .facility-card.internship:hover {
     background: var(--secondary);
 }
 

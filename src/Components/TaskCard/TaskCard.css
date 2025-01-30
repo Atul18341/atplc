@@ -2,7 +2,7 @@
     background: var(--bg);
     padding: 1rem;
     position: relative;
-    border-radius: .5rem;
+    border-radius: 10px;
     transition: .3s;
     place-self: flex-start;
     width: 100%;
@@ -57,7 +57,7 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    border-radius: .3rem;
+    border-radius: 10px;
     gap: .5rem;
 }
 
@@ -99,7 +99,7 @@
     justify-content: center;
     color: var(--white);
     padding: 1rem 2rem;
-    border-radius: 1rem;
+    border-radius: 10px;
     border: .2rem solid var(--white);
     user-select: none;
 }

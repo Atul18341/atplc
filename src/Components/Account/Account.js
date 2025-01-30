@@ -42,6 +42,12 @@ export default function Account({ accountRef, setHamburgerStatus }) {
         window.scrollTo(0, 0)
     }
 
+    const handleClick = () => {
+        setHamburgerStatus(false);
+        setPopUpStatus(false)
+        scrollToTop();
+    }
+
     return (
         <div className="account" ref={accountRef}>
             {
@@ -51,26 +57,20 @@ export default function Account({ accountRef, setHamburgerStatus }) {
                         <div className="header-profile row" ref={popUpRef} onClick={togglePopUp}>
                             <div className="profile-pic">
                                 {
-                                    user?.fullName
-                                        ?
-                                        user?.fullName[0]
-                                        : ''
+                                    user?.Name.charAt(0).toUpperCase()
                                 }
                             </div>
                             <div className="profile-details col">
                                 <div className="profile-name">
                                     {
-                                        user?.fullName
-                                            ?
-                                            user?.fullName?.split(' ')[0]
-                                            : ''
+                                        user?.Name?.split(' ')[0]
                                     }
                                 </div>
-                                <div className="profile-email">
+                                {/* <div className="profile-email">
                                     {
                                         user?.email || ''
                                     }
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className={`profile-popup ${popUpStatus ? 'active' : ''}`}>
@@ -79,10 +79,10 @@ export default function Account({ accountRef, setHamburgerStatus }) {
                                     <div className="icon">
                                         <i className="fi fi-rr-id-badge"></i>
                                     </div>
-                                    <div className="text">{user?.username}</div>
+                                    <div className="text">{user?.Username}</div>
                                 </li>
                                 <li>
-                                    <Link to="/profile" onClick={scrollToTop} >
+                                    <Link to="/profile" onClick={handleClick} >
                                         <div className="icon">
                                             <i className="fi fi-rr-user-gear"></i>
                                         </div>
@@ -91,7 +91,7 @@ export default function Account({ accountRef, setHamburgerStatus }) {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/my-courses" onClick={scrollToTop}>
+                                    <Link to="/my-courses" onClick={handleClick}>
                                         <div className="icon">
                                             <i className="fi fi-rr-e-learning"></i>
                                         </div>

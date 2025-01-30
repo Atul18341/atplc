@@ -24,7 +24,7 @@
     font-size: var(--medium-font);
     width: 100%;
     height: 5rem;
-    border-radius: .3rem;
+    border-radius: 10px;
     color: var(--text);
     background: var(--bg);
     border: .1rem solid var(--secondary);
@@ -56,7 +56,7 @@
     color: var(--text);
     transform: translateY(-50%);
     font-size: var(--medium-font);
-    border-radius: .3rem;
+    border-radius: 10px;
     pointer-events: none;
     user-select: none;
     transition: .3s;

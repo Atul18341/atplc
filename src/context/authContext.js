@@ -8,6 +8,7 @@ export const AuthContext = createContext({
     user: null,
     login: async () => { },
     logout: async () => { },
+    updateProfile: async () => { },
     isLoading: false,
     error: null
 });
@@ -52,29 +53,39 @@ export const AuthContextProvider = ({ children }) => {
                 Username: data.id,
             });
 
-            const userData = {
-                userId: data.id,
-                username: username?.toUpperCase(),
-                fullName: profile.data?.response?.[0]?.Name || "",
-                college: profile.data?.response?.[0]?.College_Name || ""
-            };
+            console.log(profile.data)
 
-            setUser(userData);
+            if (profile.data?.response?.[0]) {
 
-            // Set cookie after user state is updated
-            setCookie('user', userData, {
-                expires: 7,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'Strict'
-            });
+                const userData = {
+                    ...profile.data?.response?.[0],
+                    Username: username?.toUpperCase(),
+                };
 
-            return {
-                message: "Login Successfull.",
-                type: "success",
-                success: true
-            };
+                setUser(userData);
+
+                // Set cookie after user state is updated
+                setCookie('user', userData, {
+                    expires: 7,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'Strict'
+                });
+
+                return {
+                    message: "Login Successfull.",
+                    type: "success",
+                    success: true
+                };
+            }
+            else {
+                return {
+                    message: profile.data.response || 'Failed to get your Profile',
+                    type: "error",
+                    success: false
+                };
+            }
         } catch (err) {
-            const errorMessage = err.response?.data?.message || err.message;
+            const errorMessage = err.response?.data?.response || err.response?.data?.message || err.message;
             setError(errorMessage);
             throw new Error(errorMessage);
         } finally {
@@ -95,7 +106,7 @@ export const AuthContextProvider = ({ children }) => {
                 success: true
             };
         } catch (err) {
-            const errorMessage = err.response?.data?.message || err.message;
+            const errorMessage = err.response?.data?.response || err.response?.data?.message || err.message;
             setError(errorMessage);
             throw new Error(errorMessage);
         } finally {
@@ -103,12 +114,51 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const updateProfile = async ({ Name, College_Name, Branch, Batch, Hometown, Contact_No, Profile_Pic, Profile_Preview }) => {
+        try {
+            const profile = {
+                Username: user.id,
+                Name,
+                College_Name,
+                Branch,
+                Batch,
+                Hometown,
+                Contact_No: parseInt(Contact_No),
+                Profile_Pic,
+                Profile_Preview
+            }
+
+            const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_PATH}/profile`, profile);
+
+
+            const newData = { ...user, ...profile };
+
+            setUser(newData);
+            setCookie('user', newData);
+
+            return {
+                message: data.response || 'Profile Updated Successfully',
+                type: "success",
+                success: true
+            };
+        }
+        catch (err) {
+            const errorMessage = err.response?.data?.response || err.response?.data?.message || err.message;
+            setError(errorMessage)
+            throw new Error(errorMessage);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
+
     const value = {
         user,
+        updateProfile,
         login,
         logout,
         loading: isLoading,
-        error
+        error,
     }
 
     return (

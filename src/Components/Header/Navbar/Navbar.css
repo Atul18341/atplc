@@ -21,7 +21,7 @@
 }
 
 .nav-items .nav-links {
-    border-radius: .3rem;
+    border-radius: 10px;
     background: transparent;
     display: flex;
     align-items: center;

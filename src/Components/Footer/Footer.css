@@ -1,11 +1,12 @@
 .footer {
-    background: var(--secondary);
+    /* background: var(--secondary); */
     padding: 1rem 5%;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    color: var(--white);
+    color: var(--text);
     justify-self: flex-end;
+    box-shadow: -10px 0 50px 0px var(--shadow);
 }
 
 .footer .footer-main-section {
@@ -55,7 +56,7 @@
 
 .content a .icon i {
     margin: 0;
-    color: var(--white);
+    color: var(--text);
     font-size: var(--small-font);
 }
 
@@ -63,7 +64,7 @@
     transition: .3s;
     display: flex;
     align-items: center;
-    color: var(--white);
+    color: var(--text);
 }
 
 .social-links:hover .icon {
@@ -72,7 +73,7 @@
 
 .social-links:hover .text,
 .quick-links:hover .text {
-    text-shadow: 1px 1px 1px var(--black);
+    text-shadow: 1px 1px 1px var(--shadow);
 }
 
 
@@ -93,15 +94,15 @@
     left: 0;
     font-size: var(--small-font);
     cursor: pointer;
-    color: var(--secondary);
+    color: transparent;
     transition: .3s;
     user-select: none;
     font-family: 'Poppins', sans-serif;
 }
 
 .copyright .credit:hover {
-    color: var(--white);
-    text-shadow: 1px 1px 1px var(--black);
+    color: var(--text);
+    text-shadow: 1px 1px 1px var(--sshadow);
 }
 
 .copyright .credit:hover span {
