@@ -9,14 +9,15 @@ export const AuthContext = createContext({
     login: async () => { },
     logout: async () => { },
     updateProfile: async () => { },
-    isLoading: false,
+    getCources: async () => { },
+    loading: false,
     error: null
 });
 
 export const AuthContextProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
 
@@ -31,7 +32,7 @@ export const AuthContextProvider = ({ children }) => {
             } catch (err) {
                 console.error('Error loading user from cookie:', err);
             } finally {
-                setIsLoading(false);
+                setLoading(false);
             }
         };
 
@@ -40,7 +41,7 @@ export const AuthContextProvider = ({ children }) => {
 
     const login = async (username, password) => {
         try {
-            setIsLoading(true);
+            setLoading(true);
             setError(null);
 
             const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/login`, {
@@ -52,8 +53,6 @@ export const AuthContextProvider = ({ children }) => {
             const profile = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/profile`, {
                 Username: data.id,
             });
-
-            console.log(profile.data)
 
             if (profile.data?.response?.[0]) {
 
@@ -70,7 +69,6 @@ export const AuthContextProvider = ({ children }) => {
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: 'Strict'
                 });
-
                 return {
                     message: "Login Successfull.",
                     type: "success",
@@ -89,13 +87,14 @@ export const AuthContextProvider = ({ children }) => {
             setError(errorMessage);
             throw new Error(errorMessage);
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     }
 
     const logout = async () => {
         try {
-            setIsLoading(true);
+            setLoading(true);
+            setError(null);
 
             setUser(null);
             deleteCookie('user');
@@ -110,12 +109,29 @@ export const AuthContextProvider = ({ children }) => {
             setError(errorMessage);
             throw new Error(errorMessage);
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
+    const getCources = async () => {
+        try {
+            setError(null);
+
+            const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/my-courses`, {
+                Username: user?.id,
+            });
+            setUser(prev => ({ ...prev, courses: data }));
+        } catch (err) {
+            const errorMessage = err.response?.data?.response || err.response?.data?.message || err.message;
+            setError(errorMessage);
+            throw new Error(errorMessage);
+        }
+    }
+
     const updateProfile = async ({ Name, College_Name, Branch, Batch, Hometown, Contact_No, Profile_Pic, Profile_Preview }) => {
         try {
+
+            setError(null);
             const profile = {
                 Username: user.id,
                 Name,
@@ -130,8 +146,8 @@ export const AuthContextProvider = ({ children }) => {
 
             const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_PATH}/profile`, profile);
 
-
-            const newData = { ...user, ...profile };
+            const { Username, ...updatedData } = profile
+            const newData = { ...user, ...updatedData };
 
             setUser(newData);
             setCookie('user', newData);
@@ -148,7 +164,7 @@ export const AuthContextProvider = ({ children }) => {
             throw new Error(errorMessage);
         }
         finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     }
 
@@ -157,7 +173,8 @@ export const AuthContextProvider = ({ children }) => {
         updateProfile,
         login,
         logout,
-        loading: isLoading,
+        loading: loading,
+        getCources,
         error,
     }
 

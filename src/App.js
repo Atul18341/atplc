@@ -23,16 +23,22 @@ import PublicDashborad from './Pages/Dashboard/PublicDashboard';
 import { AuthContextProvider } from './context/authContext';
 import { ThemeProvider } from './context/themeContext';
 import CustomToastContainer from './Components/Toast/CustomToastContainer';
+import { AppContextProvider } from './context/appContext';
+import CourseDetails from './Pages/Courses/CourseDetails';
 
 function App() {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route Route path='/' element={< RootLayout />} >
+      <Route path='/' element={< RootLayout />} >
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
-        <Route path="courses" element={<Courses />} />
         <Route path="events" element={<Events />} />
+        <Route path='courses' element={<Courses />} />
+
+        <Route path='course'>
+          <Route path=":courseName" element={<CourseDetails />} />
+        </Route>
 
         <Route path="my-courses" element={<MyCoursesLayout />}>
           <Route index element={<MyCourses />} />
@@ -59,10 +65,12 @@ function App() {
   return (
     <ThemeProvider>
       <AuthContextProvider>
-        <div className="App">
-          <RouterProvider router={router} />
-          <CustomToastContainer />
-        </div>
+        <AppContextProvider>
+          <div className="App">
+            <RouterProvider router={router} />
+            <CustomToastContainer />
+          </div>
+        </AppContextProvider>
       </AuthContextProvider>
     </ThemeProvider>
   );

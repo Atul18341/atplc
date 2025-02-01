@@ -4,6 +4,7 @@
     width: 100%;
     background: var(--white);
     border-radius: 10px;
+    position: relative;
 }
 
 .page-thumbnail img {
@@ -12,10 +13,20 @@
 }
 
 .courses-page .page-heading {
-    font-size: 3rem;
+    font-size: 4rem;
     padding: 1rem 3rem;
     margin: 1rem 0;
-    font-weight: 700;
+    font-weight: 900;
+    color: var(--secondary);
+    text-decoration: underline;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(10px);
 }
 
 .courses-page .courses-grid {

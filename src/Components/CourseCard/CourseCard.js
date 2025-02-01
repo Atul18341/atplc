@@ -1,27 +1,13 @@
-import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './CourseCard.css'
+import { convertToUrlSlug } from '../../lib/utils'
 
-export default function CourseCard({ id, courseName, courseDuration, coverImage, courseCompletionStatus, couresPrice, courseTechnologies }) {
+export default function CourseCard({ enrolled = false, id, courseName, courseDuration, coverImage, courseCompletionStatus, couresPrice, courseTechnologies }) {
 
-    const [isEnrolled, setIsEnrolled] = useState(false);
-
-
-    useEffect(() => {
-        if (localStorage.getItem('courses')) {
-
-            const enrolledCourses = JSON.parse(localStorage.getItem('courses')).map(course => course.Courses_id);
-            enrolledCourses.forEach(enrolledCourseId => {
-                if (enrolledCourseId === id) {
-                    setIsEnrolled(true)
-                }
-            })
-        }
-    }, [id])
-
+    const url = enrolled ? `/my-courses/${id}/${courseName}` : `/course/${convertToUrlSlug(courseName)}`
 
     return (
-        <div className='course-card'>
+        <Link to={url} className='course-card'>
             <div className="course-cover">
                 <div className='cover-image'>
                     {
@@ -52,7 +38,7 @@ export default function CourseCard({ id, courseName, courseDuration, coverImage,
                             null
                     }
                     {
-                        (couresPrice !== null && !isEnrolled) ?
+                        (couresPrice !== null && !enrolled) ?
                             <div className="course-price">
                                 <div className="icon">
                                     <i className="fi fi-rr-indian-rupee-sign"></i>
@@ -76,9 +62,9 @@ export default function CourseCard({ id, courseName, courseDuration, coverImage,
                     </div>
                 }
 
-                <div className="course-card-buttons">
+                {/* <div className="course-card-buttons">
                     {
-                        isEnrolled ?
+                        enrolled ?
                             <Link tabIndex={0} to={`/my-courses/${id}/${courseName}`} className="course-card-btn">
                                 <div className="icon">
                                     <i className="fi fi-rr-dashboard"></i>
@@ -86,17 +72,17 @@ export default function CourseCard({ id, courseName, courseDuration, coverImage,
                                 <div className="text">Continue to Dashboard</div>
                             </Link>
                             ://to={`/enroll/${courseName}`}
-                            <Link tabIndex={0}  className="course-card-btn">
+                            <Link tabIndex={0} className="course-card-btn">
                                 <div className="icon">
                                     <i className="fi fi-rr-file-signature"></i>
                                 </div>
-                                <div className="text" onClick={(e)=>window.location.href="https://lyss.in/payment"}>Proceed to Pay</div>
+                                <div className="text" onClick={(e) => window.location.href = "https://lyss.in/payment"}>Proceed to Pay</div>
                             </Link>
 
                     }
-                </div>
+                </div> */}
             </div>
             {courseCompletionStatus && <div className="course-status">Completed</div>}
-        </div>
+        </Link>
     )
 }

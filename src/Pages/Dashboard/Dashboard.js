@@ -16,7 +16,7 @@ import { useAuth } from '../../context/authContext'
 export default function Dashboard() {
 
     const params = useParams();
-    const { user } = useAuth()
+    const { user, loading } = useAuth()
 
     const navigate = useNavigate();
     const [error, setError] = useState('');
@@ -27,11 +27,11 @@ export default function Dashboard() {
 
 
     useEffect(() => {
-        if (!user) {
+        if (!loading && !user) {
             console.log(user)
             navigate('/login', { replace: true })
         }
-    }, [user, navigate])
+    }, [user, navigate, loading])
 
     useEffect(() => {
         document.title = `Dashboard | ${params?.courseName}`
@@ -64,8 +64,9 @@ export default function Dashboard() {
                 setIsloading(true);
                 const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/dashboard`, {
                     course: params?.id,
-                    Username: JSON.parse(localStorage.getItem('user')).userId
+                    Username: user?.id
                 });
+                console.log(data)
                 setTaskData(data);
             } catch (e) {
                 setError(e);
@@ -74,8 +75,8 @@ export default function Dashboard() {
                 setIsloading(false);
             }
         }
-        getTasks();
-    }, [params?.id]);
+        user?.id && getTasks();
+    }, [params?.id, user?.id]);
 
 
     function copyLink() {
@@ -114,7 +115,7 @@ export default function Dashboard() {
                             <div className="share-work">
                                 <WhatsappShareButton
                                     title={`My ${params.courseName} Work at ATPLC`}
-                                    url={`https://www.atplc.in/dashboard/${JSON.parse(localStorage.getItem('user')).userId}/${params.id}`}
+                                    url={`https://www.atplc.in/dashboard/${user?.id}/${params.id}`}
                                 >
                                     <WhatsappIcon round={true} size={40} iconFillColor='var(--bg)' />
                                 </WhatsappShareButton>
@@ -122,11 +123,11 @@ export default function Dashboard() {
                                     title={`My ${params.courseName} Work at ATPLC`}
                                     summary="My all tasks and projects done during Training at @ATPLC"
                                     source="atplc.in"
-                                    url={`https://www.atplc.in/dashboard/${JSON.parse(localStorage.getItem('user')).userId}/${params.id}`}
+                                    url={`https://www.atplc.in/dashboard/${user?.id}/${params.id}`}
                                 >
                                     <LinkedinIcon round={true} size={40} iconFillColor='var(--bg)' />
                                 </LinkedinShareButton>
-                                <CopyToClipboard text={`https://www.atplc.in/dashboard/${JSON.parse(localStorage.getItem('user')).userId}/${params.id}`} onCopy={(e) => console.log(e)}>
+                                <CopyToClipboard text={`https://www.atplc.in/dashboard/${user?.id}/${params.id}`} onCopy={(e) => console.log(e)}>
                                     <button className='copy-link' onClick={copyLink}>
                                         <i className="fi fi-rr-copy-alt"></i>
                                         <div className="tooltip">copy</div>
@@ -141,7 +142,6 @@ export default function Dashboard() {
                                     const submittedTask = completedTask?.find(sub => {
                                         return sub.Task_No_id === task.id;
                                     });
-                                    console.log(submittedTask);
 
                                     return (
                                         <TaskCard

@@ -53,6 +53,7 @@
 .feedback-page .feedback-container .feedback-card {
     background: var(--bg);
     width: 100%;
+    border: 1px solid rgba(100, 100, 100, 0.223);
 }
 
 @media screen and (max-width:750px) {

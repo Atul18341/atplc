@@ -58,10 +58,10 @@ header .heading {
     bottom: 5%;
     right: 5%;
     cursor: pointer;
-    z-index: 5;
+    z-index: 10;
     padding: 1rem;
-    background: var(--primary);
-    border: 1px solid var(--bg);
+    background: var(--secondary);
+    border: 1px solid rgba(100,100,100,.1);
     border-radius: 10px;
     color: var(--white);
     transform: translateY(100%);

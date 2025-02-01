@@ -56,3 +56,19 @@ export function deleteCookie(name, path = '/') {
     // Delete cookie by setting expiration to past date
     document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}`;
 }
+
+export const convertToUrlSlug = (text) => {
+    return text
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '');
+}
+
+export const convertUrlToText = (url) => {
+    return url
+        .replace(/-/g, ' ') // Replace hyphens with spaces
+        .replace(/[^a-zA-Z0-9 ]/g, '') // Remove special characters except spaces
+        .split(' ') // Split into words
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letter of each word
+        .join(' '); // Join words with spaces
+};

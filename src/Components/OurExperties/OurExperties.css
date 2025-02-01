@@ -50,7 +50,9 @@
     border-radius: 10px;
     position: relative;
     overflow: hidden;
+    background: var(--bg);
     box-shadow: 5px 10px 10px -5px var(--shadow);
+    border: 1px solid rgba(100, 100, 100, 0.223);
 }
 
 .card-container .facility-card:hover h3 {

@@ -9,6 +9,8 @@ export default function Error({ error }) {
         window.scrollTo(0, 0);
     }, [])
 
+    console.log(error)
+
     return (
 
         <div className="error-message">
