@@ -24,6 +24,7 @@
     padding: 1rem;
     z-index: 2;
     background: var(--bg);
+    border-radius: 10px;
 }
 
 

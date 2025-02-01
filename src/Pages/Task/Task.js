@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import Button from '../../Components/Button/Button';
 import Input from '../../Controller/Input/Input';
 import './Task.css'
+import { useAuth } from '../../context/authContext';
 
 function StatusLabel({ taskStatus }) {
     if (taskStatus === "Under Review") {
@@ -50,6 +51,7 @@ function StatusLabel({ taskStatus }) {
 export default function Task() {
 
     const { state } = useLocation();
+    const { user } = useAuth();
     let { courseId, Task_No, Task_Topic, Task_Content, Task_Status, Code_Link, Remarks, Output_Link } = state;
 
     const [taskStatus, setTaskStatus] = useState(Task_Status);
@@ -97,7 +99,7 @@ export default function Task() {
                 setIsLoading(true);
                 const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_PATH}/task-submission`, {
                     course: courseId,
-                    Username: JSON.parse(localStorage.getItem('user')).userId,
+                    Username: user?.id,
                     Task_No: Task_No,
                     Code_Link: link.codeLink,
                     Output_Link: link.outputLink

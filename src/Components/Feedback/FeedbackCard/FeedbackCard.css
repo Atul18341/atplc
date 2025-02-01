@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    border-radius: .5rem;
+    border-radius: 10px;
     flex-shrink: 0;
     margin: 0 auto;
     transition: .3s;
@@ -85,16 +85,25 @@
     line-height: 1.5em;
     z-index: 2;
     padding: 0 2rem;
+}
+
+.feedback-card .card-body.short {
+    min-height: unset; /* Remove min-height as it might be forcing the container to expand */
+    height: calc(1.5em * 7); /* Set explicit height instead */
+    overflow: hidden;
+}
+.card-body.short .review {
     min-height: unset; /* Remove min-height as it might be forcing the container to expand */
     height: calc(1.5em * 7); /* Set explicit height instead */
     display: -webkit-box;
+    box-orient: vertical;
     -webkit-box-orient: vertical;
+    line-clamp: 7;
     -webkit-line-clamp: 7;
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-word;
 }
-
 
 .card-body .quote {
     position: absolute;

@@ -32,8 +32,21 @@
 
 .feedback-container .swiper-wrapper {
     width: 100%;
+    padding: 5px;
+
+}
+.feedback-container .swiper-slide-active .feedback-card
+{
+    border: 1px solid rgba(100, 100, 100, 0.223);
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background: linear-gradient(to bottom, var(--bg), transparent);
 }
 
+.feedback-container .swiper-pagination {
+    --swiper-pagination-bottom:-3px;
+}
 .feedback-container .swiper-button-next,
 .feedback-container .swiper-button-prev {
     color: var(--secondary);

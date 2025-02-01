@@ -1,37 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useCallback, useEffect } from 'react'
 import './Courses.css'
 import CourseCard from '../../Components/CourseCard/CourseCard';
 import Loader from '../../Components/Loader/Loader';
-import Error from '../Error/Error';
+import { useApp } from '../../context/appContext';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/authContext';
 
 export default function Courses() {
 
-    const [isloading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
-    const [courses, setCourses] = useState([]);
+    const { courses, loading, getCourses } = useApp();
+    const { user } = useAuth();
+    const myCourses = user?.courses;
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
         document.title = "ATPLC | Courses"
-        document.getElementsByTagName("META")[2].content = 'ATPLC Courses made with experts with one on one doubt resolution.'
+        document.getElementsByTagName("META")[2].content = `Explore ATPLC's expert-led courses in web development, frontend, backend, Python, AI, and more. Gain hands-on experience, industry certifications, and career-ready skills. Enroll now!`
         window.scrollTo(0, 0)
-        fetchCourses();
     }, [])
 
-    async function fetchCourses() {
-        setIsLoading(true);
-        try {
-            const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_PATH}/courses?format=json`);
-            setCourses(data.courses);
+    // Fetch feedbacks if they are not available
+    const fetchCourses = useCallback(async () => {
+        if (!courses || courses.length === 0) {
+            await getCourses();
 
-        } catch (error) {
-            setError(error)
         }
-        finally {
-            setIsLoading(false);
+    }, [courses, getCourses]);
+
+
+
+    useEffect(() => {
+        try {
+            fetchCourses();
+        } catch (err) {
+            const errorMessage = err.message;
+            toast.error(errorMessage);
+            navigate('/error', { replace: true, state: { error: err } });
         }
-    }
+    }, [navigate, fetchCourses]);
+
 
 
 
@@ -40,14 +50,15 @@ export default function Courses() {
         <section className='page courses-page'>
             <div className="page-thumbnail">
                 <img src="/Assets/Illustrator/training-page.jpg" alt="training" />
-            </div>
-            <div className="page-heading">
-                <h3>Courses</h3>
+                <div className="page-heading">
+                    <h3>Our Courses</h3>
+                </div>
             </div>
             {
-                error === '' ? isloading ? <Loader /> :
+                loading ? <Loader /> :
                     <div className="courses-grid">
-                        {courses.map(course => {
+                        {courses?.map(course => {
+                            const isEnrolled = myCourses?.some(myCourse => myCourse?.Courses_id === course?.id);
                             return <CourseCard
                                 key={course.id}
                                 id={course.id}
@@ -56,11 +67,10 @@ export default function Courses() {
                                 coverImage={course.Course_Thumbnail}
                                 couresPrice={course.Course_Price}
                                 courseTechnologies={course.Course_Technologies}
+                                enrolled={isEnrolled}
                             />
                         })}
                     </div>
-                    :
-                    <Error error={error} />
             }
         </section>
     )

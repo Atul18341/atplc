@@ -1,91 +1,96 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Loader from '../../Components/Loader/Loader';
-import Error from '../Error/Error'
 import '../CommonPage.css'
 import './Feedback.css'
 import FeedbackCard from '../../Components/Feedback/FeedbackCard/FeedbackCard';
+import { useApp } from '../../context/appContext';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function Feedback() {
 
-    const [feedback, setFeedback] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
     const [filter, setFilter] = useState('');
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        const fetchFeedback = async () => {
-            try {
-                setIsLoading(true);
-                const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_PATH}/all-feedbacks`);
-                setFeedback(data);
+    const { feedbacks, getFeedbacks, loading } = useApp()
+    const navigate = useNavigate();
 
-            } catch (error) {
-                setError(error);
-            }
-            finally {
-                setIsLoading(false);
-            }
+
+    // Fetch feedbacks if they are not available
+    const fetchFeedbacks = useCallback(async () => {
+        if (!feedbacks || feedbacks.length === 0) {
+            await getFeedbacks();
         }
-        fetchFeedback();
-    }, [])
+    }, [feedbacks, getFeedbacks]);
+
+    useEffect(() => {
+        try {
+            fetchFeedbacks();
+        } catch (err) {
+            const errorMessage = err.message;
+            toast.error(errorMessage);
+            navigate('/error', { replace: true, state: { error: err } });
+        }
+    }, [navigate, fetchFeedbacks]);
+
+    useEffect(() => {
+        const url = new URL(window.location.href);
+        const tab = url.searchParams.get('tab');
+        if (tab) {
+            setFilter(tab);
+        }
+
+    }, [filter])
+
 
     const handelClick = (e) => {
-        setFilter(e.target.value)
-        const buttons = [...e.target.parentElement.children]
-        buttons.forEach(button => {
-            button.classList.remove('active')
-        });
-        e.target.classList.add('active');
+        e.preventDefault();
+        e.stopPropagation();
+        setFilter(e.target.value);
+        navigate(`/feedbacks?tab=${e.target.value}`);
         window.scrollTo(0, 0);
     }
 
     return (
 
-        error !== ''
+        loading
             ?
-            < Error error={error} />
+            <Loader />
             :
-            isLoading
-                ?
-                <Loader />
-                :
-                <section className='page feedback-page'>
-                    <div className="page-heading">
-                        <h3>Feedbacks</h3>
-                    </div>
-                    <div className="feedback-navigation">
-                        <button onClick={handelClick} value="Trainee">
-                            <div className="icon">
-                                <i className="fi fi-rr-gym"></i>
-                            </div>
-                            <div className="icon">Trainee</div>
-                        </button>
-                        <button onClick={handelClick} value="Intern">
-                            <div className="icon">
-                                <i className="fi fi-rr-house-laptop"></i>
-                            </div>
-                            <div className="text">
-                                Intern
-                            </div>
-                        </button>
-                    </div>
-                    <div className="feedback-container">
-                        {
+            <section className='page feedback-page'>
+                <div className="page-heading">
+                    <h3>Feedbacks</h3>
+                </div>
+                <div className="feedback-navigation">
+                    <button onClick={handelClick} value="Trainee" className={`${filter === 'Trainee' ? 'active' : ''}`}>
+                        <div className="icon">
+                            <i className="fi fi-rr-gym"></i>
+                        </div>
+                        <div className="icon">Trainee</div>
+                    </button>
+                    <button onClick={handelClick} value="Intern" className={`${filter === 'Intern' ? 'active' : ''}`}>
+                        <div className="icon">
+                            <i className="fi fi-rr-house-laptop"></i>
+                        </div>
+                        <div className="text">
+                            Intern
+                        </div>
+                    </button>
+                </div>
+                <div className="feedback-container">
+                    {
 
-                            Object.values(feedback).map(e => {
-                                return e.filter(filterFeed => {
-                                    if (filter !== '')
-                                        return filterFeed.Feedback_Type === filter
-                                    else return true;
-                                }).map((feed) => {
-                                    return <FeedbackCard key={feed.id} {...feed} />
-                                })
+                        feedbacks && Object.values(feedbacks).map(e => {
+                            return e.filter(filterFeed => {
+                                if (filter !== '')
+                                    return filterFeed.Feedback_Type === filter
+                                else return true;
+                            }).map((feed) => {
+                                return <FeedbackCard key={feed.id} {...feed} full={true} />
                             })
-                        }
-                    </div>
-                </section>
+                        })
+                    }
+                </div>
+            </section>
 
     )
 }

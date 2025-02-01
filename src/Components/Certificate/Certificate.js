@@ -1,25 +1,29 @@
 import { PDFDocument, degrees, rgb, StandardFonts, fontkit } from 'pdf-lib'
 import Button from '../Button/Button'
 import './Certificate.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useAuth } from '../../context/authContext';
+import { toast } from 'react-toastify';
+import templateUrl from './Assets/template.pdf'
+import signUrl from './Assets/sign.png'
 
 
 export default function Certificate({ completedTask, totalTask, courseName, courseId }) {
 
     const [certificateURI, setCertificateURI] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
+    const { user } = useAuth();
 
+    const generateCerifiacte = async () => {
 
-    useEffect(() => {
+        try {
+            setLoading(true);
+            const courseDuration = user?.courses.filter(course => course.Courses_id === parseInt(courseId))[0].Courses__Course_Duration;
+            const userId = user?.id
 
-        const generateCerifiacte = async () => {
-
-            const courseDuration = JSON.parse(localStorage.getItem('courses')).filter(course => course.Courses_id === parseInt(courseId))[0].Courses__Course_Duration;
-            const userId = JSON.parse(localStorage.getItem('user')).userId
-
-            const templateUrl = '/Assets/Certificate/template.pdf'
-            const signUrl = '/Assets/Certificate/sign.png'
+            // const templateUrl = './Assets/Certificate/template.pdf'
+            // const signUrl = './Assets/Certificate/sign.png'
             const qrUrl = `https://quickchart.io/qr?text=https%3A%2F%2Fatplc.in%2Fdashboard%2F${userId}%2F${courseId}&dark=4a4e5a&ecLevel=H&margin=0&size=70&centerImageUrl=https://www.atplc.in/Assets/Images/atplc_logo.png`;
 
             let pdfDoc;
@@ -54,10 +58,10 @@ export default function Certificate({ completedTask, totalTask, courseName, cour
                 const pageWidth = pages[0].getWidth();
 
 
-                let { fullName, college } = JSON.parse(localStorage.getItem('user'));
+                let { Name, College_Name } = user;
 
-                const nameWidth = romanFont.widthOfTextAtSize(fullName, 50);
-                pages[0].drawText(fullName, {
+                const nameWidth = romanFont.widthOfTextAtSize(Name, 50);
+                pages[0].drawText(Name, {
                     x: (pageWidth / 2) - nameWidth / 2,
                     y: 410,
                     size: 50,
@@ -65,13 +69,14 @@ export default function Certificate({ completedTask, totalTask, courseName, cour
                     color: rgb(0, 0, 0)
                 })
 
-                if (college === undefined) {
-                    college = 'Update College name in Profile'
+                if (!College_Name) {
+                    setLoading(false);
+                    return toast.error('Please update your college name in profile section to get certificate');
                 }
 
-                const collegeWidth = romanFont.widthOfTextAtSize(college, 28);
+                const collegeWidth = romanFont.widthOfTextAtSize(College_Name, 28);
 
-                pages[0].drawText(college, {
+                pages[0].drawText(College_Name, {
                     x: (pageWidth / 2) - collegeWidth / 2,
                     y: 330,
                     size: 28,
@@ -155,20 +160,24 @@ export default function Certificate({ completedTask, totalTask, courseName, cour
             const blob = new Blob([bytes], { type: "application/pdf" });
             const docUrl = URL.createObjectURL(blob);
 
-            await setCertificateURI(docUrl);
+            setCertificateURI(docUrl);
             setLoading(false);
 
+            // downloadCertificate();
 
+        } catch (error) {
+            toast.error('Something went wrong while generating certificate:' + error.message);
         }
-
-        generateCerifiacte();
-    }, [completedTask, courseId, courseName, totalTask])
+        finally {
+            setLoading(false);
+        }
+    }
 
 
     async function downloadCertificate() {
         const a = document.createElement('a')
         a.href = certificateURI;
-        // a.download = "ATPLC " + courseName + " Certificate.pdf";
+        a.download = "ATPLC " + courseName + " Certificate.pdf";
         a.target = "_blank";
         document.body.appendChild(a);
         a.click();
@@ -188,10 +197,16 @@ export default function Certificate({ completedTask, totalTask, courseName, cour
                 <div className="current-percentage">
                     <p>Current Percentage = <span className={`${(completedTask / totalTask * 100) >= 75 ? 'success' : 'danger'}`}>{(completedTask / totalTask * 100).toFixed(2)}%</span></p>
                 </div>
+
+                <div className="certificate-download">
+                    {
+                        !certificateURI ?
+                            <Button icon='fi fi-rr-template' label={(completedTask / totalTask * 100) >= 75 ? 'Generate Certificate' : 'Generate Dummy Certificate'} onClick={generateCerifiacte} isLoading={loading} />
+                            : <Button icon='fi fi-rr-template' label={(completedTask / totalTask * 100) >= 75 ? 'Download Certificate' : 'Download Dummy Certificate'} onClick={downloadCertificate} isLoading={loading} />
+                    }
+                </div>
                 {
-                    <div className="certificate-download">
-                        <Button icon='fi fi-rr-template' label={(completedTask / totalTask * 100) >= 75 ? 'Download Certificate' : 'Download Dummy Certificate'} onClick={downloadCertificate} isLoading={loading} />
-                    </div>
+                    certificateURI ? <iframe className='certificate-preview' frameBorder={0} title='Ceritificate Preview' src={certificateURI}></iframe> : null
                 }
             </div>
         </section>
