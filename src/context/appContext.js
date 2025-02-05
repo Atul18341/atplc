@@ -26,6 +26,7 @@ export const AppContextProvider = ({ children }) => {
 
             const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_PATH}/courses?format=json`);
             setCources(data?.courses);
+            return data?.courses;
 
         } catch (err) {
             const errorMessage = err.response?.data?.response || err.response?.data?.message || err.message;
@@ -39,14 +40,13 @@ export const AppContextProvider = ({ children }) => {
         try {
             setLoading(true);
             setError(null);
-            console.log(courses)
             if (courses) {
                 const course = courses.find(course => convertToUrlSlug(course.Course_Name) === title);
                 return course;
             }
             else {
-                await getCourses();
-                const course = courses.find(course => convertToUrlSlug(course.Course_Name) === title);
+                const courses = await getCourses();
+                const course = courses?.find(course => convertToUrlSlug(course.Course_Name) === title);
                 return course;
             }
 
