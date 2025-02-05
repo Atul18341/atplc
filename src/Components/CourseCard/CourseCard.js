@@ -12,7 +12,7 @@ export default function CourseCard({ enrolled = false, id, courseName, courseDur
                 <div className='cover-image'>
                     {
                         coverImage && coverImage !== '/media/' ?
-                            <img src={`${process.env.REACT_APP_BACKEND_PATH}${coverImage}`} alt="course thumbnail" />
+                            <img src={`${process.env.REACT_APP_BACKEND_PATH}${coverImage}`} alt={courseName} />
                             :
                             <div className='cover-default-image'> {'</>'}</div>
                     }
