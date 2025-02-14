@@ -19,6 +19,18 @@ export default function Events() {
                         </div>
                     </a>
                 </div>
+                <div className="events-container">
+                    <a className="events" href="https://forms.gle/aKqf6Ck8YdYxC4qR9"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        <div className="events-image">
+                            <img src="/Assets/Illustrator/Seminar.png" alt="seminar" />
+                        </div>
+                        <div className="events-text">
+                            Pre-requisites & Basics of IOT Quiz
+                        </div>
+                    </a>
+                </div>
             </div>
         </section>
     )
