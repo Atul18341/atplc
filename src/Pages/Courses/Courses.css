@@ -40,7 +40,7 @@
 
 /* Course Detail Page */
 
-.page {
+.page.course-page {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -147,6 +147,12 @@
 }
 .content-preview {
   margin-bottom: 10px;
+}
+.content-preview p {
+  font-size: large;
+  color: #f14134;
+  text-align: center;
+  padding: 10px;
 }
 
 @media screen and (max-width: 650px) {
