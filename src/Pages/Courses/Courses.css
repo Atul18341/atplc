@@ -81,5 +81,17 @@
 }
 .course-page .course-details{
     display: flex;
-    flex-direction: column;
+    flex-direction:column;
+    font-size: 2rem;
+    margin-right: 10px;
 }
+.course-page{display:flex;flex-direction: row;}
+.course-details h4{margin: 10px;}
+.tech{
+      border-radius:10px;
+      margin:5px;
+      padding: 5px;  
+    }
+.content h1{margin: 10px;}
+.enroll-content{text-align: center;}
+.enroll-content img{width:200px;height:200px;margin: 10px;}
