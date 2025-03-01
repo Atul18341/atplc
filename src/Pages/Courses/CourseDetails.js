@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { convertUrlToText } from "../../lib/utils";
 import { useApp } from "../../context/appContext";
 import Loader from "../../Components/Loader/Loader";
+import scanner from "./Scanner/Full-stack-scanner.jpg";
 
 const CourseDetails = () => {
   const params = useParams();
@@ -31,8 +32,6 @@ const CourseDetails = () => {
     fetchCourse();
   }, [params?.courseName, fetchCourse]);
 
-  console.log(course);
-
   return loading ? (
     <Loader />
   ) : (
@@ -42,60 +41,78 @@ const CourseDetails = () => {
           {course?.Course_Thumbnail &&
           course?.Course_Thumbnail !== "/media/" ? (
             <img
-              src={`${process.env.REACT_APP_BACKEND_PATH}${course.Course_Thumbnail}`}
+              src={`https://atplc20.pythonanywhere.com/${course.Course_Thumbnail}`}
               alt={course.Course_Name}
             />
           ) : (
             <div className="cover-default-image"> {"</>"}</div>
           )}
-          <div className="page-heading">
-            <h3>{course?.Course_Name}</h3>
+        </div>
+
+        <div className="page-heading">
+          <h3>{course?.Course_Name}</h3>
+        </div>
+
+        <div className="course-details-container">
+          <div className="course-details">
+            <div className="">
+              <h4 className="desc-title">Tools & Technologies :</h4>
+              <div className="techs-list">
+                {course?.Course_Technologies &&
+                  course.Course_Technologies.split(",").map((tech, index) => {
+                    return (
+                      <span className="tech" key={index}>
+                        {tech}
+                      </span>
+                    );
+                  })}
+              </div>
+            </div>
+            <div className="">
+              <h4 className="desc-title">Duration :</h4>
+              {course?.Course_Duration && (
+                <span>
+                  {course.Course_Duration} Month
+                  {course.Course_Duration > 1 ? "s" : ""}
+                </span>
+              )}
+            </div>
+            <div className="">
+              <h4 className="desc-title">Price :</h4>
+              <span>₹ {course?.Course_Price}</span>
+            </div>
+          </div>
+
+          <div className="enroll-qr">
+            <h4 className="desc-title">Course Enrollment:</h4>
+            <img src={scanner} width="200" height="200" alt="UPI Scanner" />
+          </div>
+
+          <div className="payment-message">
+            <h3>
+              To enroll into the course, scan and pay using above scanner and
+              fill <a href="https://forms.gle/C8VfVfv3mFPJFpHc8">this form.</a>{" "}
+            </h3>
+            <p className="payment-note">
+              (Keep patience after payment. You will receive login credentials
+              and WhatsApp group link on registered mail before course starts.)
+            </p>
           </div>
         </div>
-        <div className="course-details">
-          <div className="technologies">
-            <h3>Tools & Technologies :</h3>
-            <div className="tecs">
-              {course?.Course_Technologies &&
-                course.Course_Technologies.split(",").map((tech, index) => {
-                  return (
-                    <span className="tech" key={index}>
-                      {tech}
-                    </span>
-                  );
-                })}
-            </div>
-          </div>
 
-          <div className="duration">
-            <h3>Duration :</h3>
-            {course?.Course_Duration && (
-              <span className="tech">
-                {course.Course_Duration} Month
-                {course.Course_Duration > 1 ? "s" : ""}
-              </span>
-            )}
-          </div>
-
-          <div className="price">
-            <h3>Price :</h3>
-            <div className="icon">
-              <i className="fi fi-rr-indian-rupee-sign"></i>
-            </div>
-            <div className="text">{course?.Course_Price}</div>
-          </div>
-          <div className="content">
-            <h3>Course Contents:</h3>
-            {course?.Course_Contents ? (
-              <iframe
-                src={course.Course_Contents}
-                title={course.Course_Name}
-                frameborder="0"
-              />
-            ) : (
-              <p>Course content is not available</p>
-            )}
-          </div>
+        <div className="content-preview">
+          <h4 className="desc-title">Course Contents:</h4>
+          {course?.Course_Contents ? (
+            <iframe
+              src={course.Course_Contents}
+              title={course.Course_Name}
+              frameborder="0"
+              width="95%"
+              height="500"
+            />
+          ) : (
+            <p>Course content is not available</p>
+          )}
         </div>
       </section>
     </>

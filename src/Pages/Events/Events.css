@@ -1,12 +1,13 @@
 .events-page .page-body {
-    width: 100%;
+    width: 50%;
 }
 
 .events-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
-    gap: 2rem;
-    padding: 0 1rem;
+    display: flex;
+    flex-direction:column;
+   
+    
+    margin: 10px;
 }
 
 .events-container .events {

@@ -78,7 +78,7 @@ export default function Footer() {
                                 <div className="icon">
                                     <i className="fi fi-rr-phone-call"></i>
                                 </div>
-                                <div className="text">+91 6205695667</div>
+                                <div className="text">+91-6205695667</div>
                             </a>
                         </div>
                         <div className="social-links">
