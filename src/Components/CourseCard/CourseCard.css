@@ -1,193 +1,188 @@
 .course-card {
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    transition: all .3s, border 0s;
-    overflow: hidden;
-    position: relative;
-    z-index: 2;
-    padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  transition: all 0.3s, border 0s;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  padding: 1rem;
 }
 
 .course-card:hover {
-    box-shadow: 0 1rem 5rem -3rem var(--black);
+  box-shadow: 0 1rem 5rem -3rem var(--black);
 }
 
 .course-card:hover .course-cover {
-    border: none;
+  border: none;
 }
 
 .course-card .course-cover {
-    z-index: 1;
-    flex: 1;
-    transition: .3s;
-    user-select: none;
-    transform: translateY(8.7rem);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    gap: 1rem;
-    gap: .5rem;
-    background: var(--bg);
-    border: 1px solid #58585864;
+  max-height: 25rem;
+  z-index: 1;
+  flex: 1;
+  transition: 0.3s;
+  user-select: none;
+  transform: translateY(8.7rem);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  gap: 1rem;
+  gap: 0.5rem;
+  background: var(--bg);
+  border: 1px solid #58585864;
 }
 
-
 .course-cover .cover-image {
-    width: 100%;
-    max-height: 20rem;
-    overflow: hidden;
-    background: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  max-height: 20rem;
+  overflow: hidden;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .course-cover .cover-image img {
-    align-self: center;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
+  align-self: center;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .course-cover .cover-default-image {
-    font-size: 8rem;
-    font-weight: 800;
-    text-align: center;
-    color: var(--primary);
-    font-family: 'Poppins', sans-serif;
-    padding-block: 3rem;
-    text-shadow: .5rem .5rem .5rem var(--bg-dark), .6rem .6rem .5rem var(--bg-light), 1rem 1rem .5rem var(--bg-dark);
-    font-size: italic;
-    z-index: 1;
-    line-height: 15rem;
-    background: var(--bg);
-    width: 100%;
-    overflow: hidden;
-    transition: .3s;
-    user-select: none;
+  font-size: 8rem;
+  font-weight: 800;
+  height: 20rem;
+  text-align: center;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  text-shadow: 0.5rem 0.5rem 0.5rem var(--bg-dark),
+    0.6rem 0.6rem 0.5rem var(--bg-light), 1rem 1rem 0.5rem var(--bg-dark);
+  font-size: italic;
+  z-index: 1;
+  line-height: 15rem;
+  background: var(--bg);
+  width: 100%;
+  overflow: hidden;
+  transition: 0.3s;
+  user-select: none;
 }
-
 
 .course-cover .course-name {
-    width: 100%;
-    font-size: var(--large-font);
-    text-shadow: none;
-    padding: 1rem;
-    font-weight: 600;
-    color: var(--primary);
-    font-family: 'Poppins', sans-serif;
-    font-size: italic;
-    padding: .5rem;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    flex: 1;
+  width: 100%;
+  font-size: var(--large-font);
+  text-shadow: none;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  color: var(--primary);
+  font-family: "Poppins", sans-serif;
+  font-size: italic;
+  padding: 0.5rem;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-
 .course-card .course-content {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-    transition: .3s;
-    transform: translateY(-50%);
-    z-index: -1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: 0.3s;
+  transform: translateY(-50%);
+  z-index: -1;
 }
 
 .course-content .course-price-duration {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .course-price-duration .course-duration,
 .course-price-duration .course-price {
-    display: flex;
-    gap: .5rem;
-    align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .course-duration .icon i,
 .course-duration .text,
 .course-price .icon i,
 .course-price .text {
-    color: var(--faded-text);
-    font-size: var(--medium-font);
+  color: var(--faded-text);
+  font-size: var(--medium-font);
 }
 
-
 .course-card:hover {
-    border: 1px solid #58585864;
-    background: var(--bg);
+  border: 1px solid #58585864;
+  background: var(--bg);
 }
 
 .course-card:hover .course-content,
 .course-card:hover .course-cover {
-    transform: translateY(0%);
-    z-index: 1;
+  transform: translateY(0%);
+  z-index: 1;
 }
 
-
 .course-content .techs {
-    display: flex;
-    padding: .5rem 0;
-    align-items: center;
-    gap: .5rem;
-    flex-wrap: wrap;
+  display: flex;
+  padding: 0.5rem 0;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .techs .tech {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: .5rem 1rem;
-    background: var(--bg-dark);
-    font-size: var(--small-font);
-    gap: .5rem;
-    border-radius: 5px;
-    flex-wrap: wrap;
-    user-select: none;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background: var(--bg-dark);
+  font-size: var(--small-font);
+  gap: 0.5rem;
+  border-radius: 5px;
+  flex-wrap: wrap;
+  user-select: none;
+  cursor: pointer;
 }
 
-
-
-
 .course-content .course-card-buttons {
-    margin-top: 1rem;
-    border-radius: 10px;
-    /* flex: 1; */
-    display: flex;
-    align-items: flex-end;
-    background: #000;
+  margin-top: 1rem;
+  border-radius: 10px;
+  /* flex: 1; */
+  display: flex;
+  align-items: flex-end;
+  background: #000;
 }
 
 .course-card-buttons .course-card-btn {
-    background: var(--secondary);
-    display: block;
-    text-align: center;
-    font-size: var(--medium-font);
-    border: none;
-    padding: 1rem 2rem;
-    transition: .3s;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    color: var(--white);
-    border-radius: 10px;
+  background: var(--secondary);
+  display: block;
+  text-align: center;
+  font-size: var(--medium-font);
+  border: none;
+  padding: 1rem 2rem;
+  transition: 0.3s;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  color: var(--white);
+  border-radius: 10px;
 }
 
-
 .course-card-buttons .course-card-btn:hover {
-    background: var(--primary);
-    box-shadow: 0 1rem 2rem -1rem var(--black);
-    cursor: pointer;
+  background: var(--primary);
+  box-shadow: 0 1rem 2rem -1rem var(--black);
+  cursor: pointer;
 }

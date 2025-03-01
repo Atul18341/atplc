@@ -1,85 +1,85 @@
 .courses-page .page-thumbnail {
-    display: flex;
-    height: max(25rem, 25vh);
-    width: 100%;
-    background: var(--white);
-    border-radius: 10px;
-    position: relative;
+  display: flex;
+  height: max(25rem, 25vh);
+  width: 100%;
+  background: var(--white);
+  border-radius: 10px;
+  position: relative;
 }
 
 .page-thumbnail img {
-    border-radius: 10px;
-    object-fit: contain;
+  border-radius: 10px;
+  object-fit: contain;
 }
 
 .courses-page .page-heading {
-    font-size: 4rem;
-    padding: 1rem 3rem;
-    margin: 1rem 0;
-    font-weight: 900;
-    color: var(--secondary);
-    text-decoration: underline;
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    border-radius: 10px;
-    width: 100%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    backdrop-filter: blur(10px);
+  font-size: 4rem;
+  padding: 1rem 3rem;
+  margin: 1rem 0;
+  font-weight: 900;
+  color: var(--secondary);
+  text-decoration: underline;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(10px);
 }
 
 .courses-page .courses-grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
-    padding: 2rem 5%;
-    align-self: flex-start;
-    gap: 2rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+  padding: 2rem 5%;
+  align-self: flex-start;
+  gap: 2rem;
 }
 
-.course-page .page-thumbnail{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
+.course-page .page-thumbnail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
-
 
 .course-page .page-thumbnail img {
-    border-radius: 10px;
-    object-fit: contain;
-    max-height: 500px;
+  border-radius: 10px;
+  object-fit: contain;
+  max-height: 500px;
 }
 
 .course-page .page-heading {
-    font-size: 3rem;
-    padding: 1rem 3rem;
-    margin: 1rem 0;
-    font-weight: 900;
-    color: var(--text);
-    text-align: center;
+  font-size: 3rem;
+  padding: 1rem 3rem;
+  margin: 1rem 0;
+  font-weight: 900;
+  color: var(--text);
+  text-align: center;
 }
 .course-page .page-thumbnail .cover-default-image {
-    border-radius: 10px;
-    font-size: 8rem;
-    font-weight: 800;
-    text-align: center;
-    color: var(--primary);
-    font-family: 'Poppins', sans-serif;
-    padding-block: 3rem;
-    text-shadow: .5rem .5rem .5rem var(--bg-dark), .6rem .6rem .5rem var(--bg-light), 1rem 1rem .5rem var(--bg-dark);
-    font-size: italic;
-    z-index: 1;
-    line-height: 15rem;
-    background: var(--bg);
-    width: 100%;
-    overflow: hidden;
-    transition: .3s;
-    user-select: none;
+  border-radius: 10px;
+  font-size: 8rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--primary);
+  font-family: "Poppins", sans-serif;
+  padding-block: 3rem;
+  text-shadow: 0.5rem 0.5rem 0.5rem var(--bg-dark),
+    0.6rem 0.6rem 0.5rem var(--bg-light), 1rem 1rem 0.5rem var(--bg-dark);
+  font-size: italic;
+  z-index: 1;
+  line-height: 15rem;
+  background: var(--bg);
+  width: 100%;
+  overflow: hidden;
+  transition: 0.3s;
+  user-select: none;
 }
-.course-page .course-details{
-    display: flex;
-    flex-direction: column;
+.course-page .course-details {
+  display: flex;
+  flex-direction: column;
 }
