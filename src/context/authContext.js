@@ -60,6 +60,7 @@ export const AuthContextProvider = ({ children }) => {
       if (profile.data?.response?.[0]) {
         const userData = {
           ...profile.data?.response?.[0],
+          id: profile.data?.response?.[0].Username,
           Username: username?.toUpperCase(),
         };
 
@@ -131,7 +132,7 @@ export const AuthContextProvider = ({ children }) => {
           Username: user.id,
         }
       );
-      setUser((prev) => ({ ...prev, courses: data }));
+      setUser((prev) => ({ ...prev, courses: data || [] }));
     } catch (err) {
       const errorMessage =
         err.response?.data?.response ||

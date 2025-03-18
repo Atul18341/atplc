@@ -1,159 +1,154 @@
 .task-page {
-    padding: 1rem 3rem;
+  padding: 1rem 3rem;
 }
 
 .task-page .page-heading {
-    font-size: 3rem;
-    padding: 1rem 3rem;
-    margin: 1rem 0;
-    color: var(--text);
-    font-weight: 700;
+  font-size: 3rem;
+  padding: 1rem 3rem;
+  margin: 1rem 0;
+  color: var(--text);
+  font-weight: 700;
 }
 
 .task-page .page-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-content .content-heading {
-    gap: 2rem;
-    align-items: center;
+  gap: 2rem;
+  align-items: center;
 }
 
 .content-heading .task-no {
-    font-size: 5rem;
-    font-weight: 600;
-    color: var(--faded-text);
+  font-size: 5rem;
+  font-weight: 600;
+  color: var(--faded-text);
 }
 
 .content-heading .task-title {
-    font-size: 3rem;
-    font-weight: 600;
-    color: var(--primary);
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--primary);
 }
 
 .page-content .task-content {
-    font-size: var(--medium-font);
-    padding: 1rem;
-    padding-left: 2rem;
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
+  font-size: var(--medium-font);
+  padding: 1rem;
+  padding-left: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .page-content .task-content p {
-    background: var(--bg);
-    padding: 1rem;
-    font-weight: 500;
-    border-radius: .3rem;
+  background: var(--bg);
+  padding: 1rem;
+  font-weight: 500;
+  border-radius: 10px;
 }
 
 .page-content .task-submisssion {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .task-submisssion .submission-status-remarks {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem 0;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  gap: 1rem;
 }
 
 .submission-status-remarks .status-label {
-    padding: 1rem;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    border-radius: .3rem;
-    width: fit-content;
+  padding: 1rem;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 10px;
+  width: fit-content;
 }
 
 .status-label .icon i {
-    color: var(--black);
-    margin: 0;
+  color: var(--black);
+  margin: 0;
 }
 
-.status-label .icon~.text {
-    font-weight: 500;
-    color: var(--black);
-    font-size: var(--small-font);
+.status-label .icon ~ .text {
+  font-weight: 500;
+  color: var(--black);
+  font-size: var(--small-font);
 }
-
-
 
 .submission-status-remarks .remarks {
-    padding: 1rem;
-    background: var(--bg-dark);
-    border-radius: .3rem;
+  padding: 1rem;
+  background: var(--bg-dark);
+  border-radius: 10px;
 }
 
-
 .submission-status-remarks .remarks .remarks-heading {
-    font-size: var(--large-font);
-    font-weight: 500;
+  font-size: var(--large-font);
+  font-weight: 500;
 }
 
 .submission-status-remarks .remarks .remarks-body {
-    font-size: var(--medium-font);
-    color: rgb(249, 116, 0);
-    font-weight: 600;
-    margin-left: 1rem;
-    padding: .5rem 0;
+  font-size: var(--medium-font);
+  color: rgb(249, 116, 0);
+  font-weight: 600;
+  margin-left: 1rem;
+  padding: 0.5rem 0;
 }
 
 .task-submisssion .submission-form {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-    padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 2rem 0;
 }
 
 .submission-form .input-heading {
-    margin-top: 2rem;
-    font-size: var(--medium-font);
-    color: var(--primary);
-    padding: 1rem 0;
+  margin-top: 2rem;
+  font-size: var(--medium-font);
+  color: var(--primary);
+  padding: 1rem 0;
 }
 
 .submission-form .input-box-container {
-    position: relative;
+  position: relative;
 }
 
 .submission-form .input-box-container .input-box input {
-    padding-right: 6.5rem;
+  padding-right: 6.5rem;
 }
 
-
-
 .input-box-container .edit {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 6rem;
-    height: 100%;
-    padding: 1.5rem 0;
-    background: var(--secondary);
-    cursor: pointer;
-    border-radius: .3rem;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    display: grid;
-    place-items: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 6rem;
+  height: 100%;
+  padding: 1.5rem 0;
+  background: var(--secondary);
+  cursor: pointer;
+  border-radius: 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  display: grid;
+  place-items: center;
 }
 
 .input-box-container .edit .icon i {
-    font-size: var(--medium-font);
-    color: var(--white);
+  font-size: var(--medium-font);
+  color: var(--white);
 }
 
 .submission-form .button {
-    margin-top: 2rem;
-    padding: 1.5rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
 }
 
 .submission-form .button .icon i {
-    margin-top: -.15rem;
+  margin-top: -0.15rem;
 }
