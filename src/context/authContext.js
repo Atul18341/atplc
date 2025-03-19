@@ -44,7 +44,7 @@ export const AuthContextProvider = ({ children }) => {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACKEND_PATH}/login`,
         {
-          Username: username.toUpperCase(),
+          Username: username,
           Password: password,
         }
       );
