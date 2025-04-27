@@ -51,6 +51,7 @@ export default function Task() {
   const { user } = useAuth();
   let {
     courseId,
+    Task_Id,
     Task_No,
     Task_Topic,
     Task_Content,
@@ -59,6 +60,8 @@ export default function Task() {
     Remarks,
     Output_Link,
   } = state;
+
+  console.log(Task_Id, Task_No);
 
   const [taskStatus, setTaskStatus] = useState(Task_Status);
   const [remarks, setRemarks] = useState("");
@@ -97,7 +100,7 @@ export default function Task() {
           {
             course: courseId,
             Username: user?.id,
-            Task_No: Task_No,
+            Task_Id: Task_Id,
             Code_Link: link.codeLink,
             Output_Link: link.outputLink,
           }

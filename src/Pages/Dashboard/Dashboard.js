@@ -64,6 +64,7 @@ export default function Dashboard() {
             return acc;
           }, {})
         );
+        // console.log(tasks, uniqueSubmissions);
         setCompletedTask(
           uniqueSubmissions.filter((sub) => {
             return sub.Task_Status === "Approved";
@@ -82,6 +83,7 @@ export default function Dashboard() {
             Remarks: submission?.Remarks || "",
           };
         });
+        console.log(newTasks);
         setTaskData(newTasks);
       } catch (e) {
         setError(e);
