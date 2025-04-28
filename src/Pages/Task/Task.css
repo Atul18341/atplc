@@ -100,6 +100,21 @@
   margin-left: 1rem;
   padding: 0.5rem 0;
 }
+.status-label-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.status-label-container .status-label {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+}
 
 .task-submisssion .submission-form {
   display: flex;

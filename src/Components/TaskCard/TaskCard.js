@@ -51,6 +51,7 @@ export default function TaskCard({
   Task_Status,
   Code_Link,
   Output_Link,
+  Topic_Completed,
   Remarks,
 }) {
   const taskNumber = Task_No < 10 ? `0${Task_No}` : Task_No;
@@ -59,7 +60,7 @@ export default function TaskCard({
     return (
       <Link
         to={`/task/${convertToUrlSlug(Task_Topic)}`}
-        className={`task-card`}
+        className={`task-card ${Topic_Completed ? "completed" : ""}`}
         state={{
           courseId,
           Task_No,
@@ -70,6 +71,7 @@ export default function TaskCard({
           Code_Link,
           Output_Link,
           Remarks,
+          Topic_Completed,
         }}
       >
         <div className="task-card-header">
@@ -78,6 +80,13 @@ export default function TaskCard({
         </div>
 
         <div className="task-card-status">
+          {Topic_Completed && (
+            <div className="status-label danger row">
+              <div className="icon">
+                <i class="fi fi-rr-alarm-exclamation"></i>
+              </div>
+            </div>
+          )}
           <StatusLabel taskStatus={Task_Status} />
         </div>
       </Link>

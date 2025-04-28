@@ -83,7 +83,6 @@ export default function Dashboard() {
             Remarks: submission?.Remarks || "",
           };
         });
-        console.log(newTasks);
         setTaskData(newTasks);
       } catch (e) {
         setError(e);
@@ -174,6 +173,7 @@ export default function Dashboard() {
                   Code_Link={task.Code_Link || ""}
                   Output_Link={task.Output_Link || ""}
                   Remarks={task.Remarks || ""}
+                  Topic_Completed={task.Topic_Completed || false}
                 />
               );
             })}

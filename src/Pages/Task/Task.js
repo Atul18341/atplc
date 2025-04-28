@@ -59,9 +59,8 @@ export default function Task() {
     Code_Link,
     Remarks,
     Output_Link,
+    Topic_Completed,
   } = state;
-
-  console.log(Task_Id, Task_No);
 
   const [taskStatus, setTaskStatus] = useState(Task_Status);
   const [remarks, setRemarks] = useState("");
@@ -92,6 +91,10 @@ export default function Task() {
       setMessage("Enter your link to procede");
     } else if (link.codeLink === Code_Link && link.outputLink === Output_Link) {
       setMessage("Submission link is already updated");
+    } else if (Topic_Completed) {
+      setMessage("Task Completion date is already passed");
+    } else if (Task_Status === "Verified") {
+      setMessage("Task is already verified");
     } else {
       try {
         setIsLoading(true);
@@ -137,7 +140,18 @@ export default function Task() {
         </div>
         <div className="task-submisssion">
           <div className="submission-status-remarks">
-            <StatusLabel taskStatus={taskStatus} />
+            <div className="status-label-container">
+              <StatusLabel taskStatus={taskStatus} />
+
+              {Topic_Completed && (
+                <div className="status-label danger row">
+                  <div className="icon">
+                    <i class="fi fi-rr-alarm-exclamation"></i>
+                  </div>
+                  <div className="text">Task Submission Date Passed</div>
+                </div>
+              )}
+            </div>
             {remarks && (
               <div className="remarks">
                 <div className="remarks-heading">
@@ -152,6 +166,7 @@ export default function Task() {
             <h4 className="input-heading">Enter your Task Code Link</h4>
             <div className="input-box-container">
               <Input
+                disabled={Topic_Completed || Task_Status === "Verified"}
                 icon="fi fi-rr-display-code"
                 type="text"
                 id="code-link"
@@ -166,6 +181,7 @@ export default function Task() {
             </h4>
             <div className="input-box-container">
               <Input
+                disabled={Topic_Completed || Task_Status === "Verified"}
                 icon="fi fi-rr-pulse"
                 type="text"
                 id="output-link"
@@ -178,6 +194,7 @@ export default function Task() {
             {(link.codeLink !== Code_Link ||
               link.outputLink !== Output_Link) && (
               <Button
+                disabled={Topic_Completed || Task_Status === "Verified"}
                 type="submit"
                 className="submit-button"
                 icon="fi fi-rr-arrow-up-from-square"
