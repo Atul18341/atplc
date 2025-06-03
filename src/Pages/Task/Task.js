@@ -166,7 +166,10 @@ export default function Task() {
             <h4 className="input-heading">Enter your Task Code Link</h4>
             <div className="input-box-container">
               <Input
-                disabled={Topic_Completed || Task_Status === "Verified"}
+                disabled={
+                  (Topic_Completed && Task_Status !== "Rejected") ||
+                  Task_Status === "Verified"
+                }
                 icon="fi fi-rr-display-code"
                 type="text"
                 id="code-link"
@@ -181,7 +184,10 @@ export default function Task() {
             </h4>
             <div className="input-box-container">
               <Input
-                disabled={Topic_Completed || Task_Status === "Verified"}
+                disabled={
+                  (Topic_Completed && Task_Status !== "Rejected") ||
+                  Task_Status === "Verified"
+                }
                 icon="fi fi-rr-pulse"
                 type="text"
                 id="output-link"
@@ -194,7 +200,10 @@ export default function Task() {
             {(link.codeLink !== Code_Link ||
               link.outputLink !== Output_Link) && (
               <Button
-                disabled={Topic_Completed || Task_Status === "Verified"}
+                disabled={
+                  (Topic_Completed && Task_Status !== "Rejected") ||
+                  Task_Status === "Verified"
+                }
                 type="submit"
                 className="submit-button"
                 icon="fi fi-rr-arrow-up-from-square"
