@@ -143,14 +143,14 @@ export default function Task() {
             <div className="status-label-container">
               <StatusLabel taskStatus={taskStatus} />
 
-              {Topic_Completed && (
+              {Topic_Completed && taskStatus !== "Rejected" ? (
                 <div className="status-label danger row">
                   <div className="icon">
                     <i class="fi fi-rr-alarm-exclamation"></i>
                   </div>
                   <div className="text">Task Submission Date Passed</div>
                 </div>
-              )}
+              ) : null}
             </div>
             {remarks && (
               <div className="remarks">
