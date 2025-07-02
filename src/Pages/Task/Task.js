@@ -6,7 +6,7 @@ import Input from "../../Controller/Input/Input";
 import "./Task.css";
 import { useAuth } from "../../context/authContext";
 
-function StatusLabel({ taskStatus }) {
+function StatusLabel({ taskStatus, topicCompleted }) {
   if (taskStatus === "Under Review") {
     return (
       <div className="status-label info row">
@@ -35,14 +35,24 @@ function StatusLabel({ taskStatus }) {
       </div>
     );
   } else {
-    return (
-      <div className="status-label pending row">
-        <div className="icon">
-          <i className="fi fi-rr-cross-circle"></i>
+    if (topicCompleted) {
+      return (
+        <div className="status-label danger row">
+          <div className="icon">
+            <i className="fi fi-rr-alarm-exclamation"></i>
+          </div>
+          <div className="text">Missed</div>
         </div>
-        <div className="text">Not Submitted</div>
-      </div>
-    );
+      );
+    } else
+      return (
+        <div className="status-label pending row">
+          <div className="icon">
+            <i className="fi fi-rr-cross-circle"></i>
+          </div>
+          <div className="text">Not Submitted</div>
+        </div>
+      );
   }
 }
 
@@ -141,16 +151,10 @@ export default function Task() {
         <div className="task-submisssion">
           <div className="submission-status-remarks">
             <div className="status-label-container">
-              <StatusLabel taskStatus={taskStatus} />
-
-              {Topic_Completed && taskStatus !== "Rejected" ? (
-                <div className="status-label danger row">
-                  <div className="icon">
-                    <i class="fi fi-rr-alarm-exclamation"></i>
-                  </div>
-                  <div className="text">Task Submission Date Passed</div>
-                </div>
-              ) : null}
+              <StatusLabel
+                taskStatus={taskStatus}
+                topicCompleted={Topic_Completed}
+              />
             </div>
             {remarks && (
               <div className="remarks">
@@ -167,7 +171,8 @@ export default function Task() {
             <div className="input-box-container">
               <Input
                 disabled={
-                  (Topic_Completed && Task_Status !== "Rejected") ||
+                  ((Topic_Completed || false) &&
+                    Task_Status !== "Under Review") ||
                   Task_Status === "Verified"
                 }
                 icon="fi fi-rr-display-code"
@@ -185,7 +190,8 @@ export default function Task() {
             <div className="input-box-container">
               <Input
                 disabled={
-                  (Topic_Completed && Task_Status !== "Rejected") ||
+                  ((Topic_Completed || false) &&
+                    Task_Status !== "Under Review") ||
                   Task_Status === "Verified"
                 }
                 icon="fi fi-rr-pulse"
@@ -201,7 +207,8 @@ export default function Task() {
               link.outputLink !== Output_Link) && (
               <Button
                 disabled={
-                  (Topic_Completed && Task_Status !== "Rejected") ||
+                  ((Topic_Completed || false) &&
+                    Task_Status !== "Under Review") ||
                   Task_Status === "Verified"
                 }
                 type="submit"
