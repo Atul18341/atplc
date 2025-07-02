@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./TaskCard.css";
 import { convertToUrlSlug } from "../../lib/utils";
 
-function StatusLabel({ taskStatus }) {
+function StatusLabel({ taskStatus, topicCompleted }) {
   if (taskStatus === "Under Review") {
     return (
       <div className="status-label info row">
@@ -32,14 +32,24 @@ function StatusLabel({ taskStatus }) {
       </div>
     );
   } else {
-    return (
-      <div className="status-label pending row">
-        <div className="icon">
-          <i className="fi fi-rr-cross-circle"></i>
+    if (topicCompleted) {
+      return (
+        <div className="status-label danger row">
+          <div className="icon">
+            <i className="fi fi-rr-alarm-exclamation"></i>
+          </div>
+          <div className="text">Missed</div>
         </div>
-        <div className="text">Not Submitted</div>
-      </div>
-    );
+      );
+    } else
+      return (
+        <div className="status-label pending row">
+          <div className="icon">
+            <i className="fi fi-rr-cross-circle"></i>
+          </div>
+          <div className="text">Not Submitted</div>
+        </div>
+      );
   }
 }
 export default function TaskCard({
@@ -80,14 +90,10 @@ export default function TaskCard({
         </div>
 
         <div className="task-card-status">
-          {Topic_Completed && (
-            <div className="status-label danger row">
-              <div className="icon">
-                <i class="fi fi-rr-alarm-exclamation"></i>
-              </div>
-            </div>
-          )}
-          <StatusLabel taskStatus={Task_Status} />
+          <StatusLabel
+            taskStatus={Task_Status}
+            topicCompleted={Topic_Completed || false}
+          />
         </div>
       </Link>
     );

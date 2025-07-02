@@ -6,6 +6,7 @@ import { useAuth } from "../../context/authContext";
 import { toast } from "react-toastify";
 import templateUrl from "./Assets/template.pdf";
 import signUrl from "./Assets/sign.png";
+import { useApp } from "../../context/appContext";
 
 export default function Certificate({
   completedTask,
@@ -17,10 +18,12 @@ export default function Certificate({
   const [loading, setLoading] = useState(false);
 
   const { user } = useAuth();
+  const { getCourses } = useApp();
 
   const generateCerifiacte = async () => {
     try {
       setLoading(true);
+      if (!user?.courses) await getCourses();
       const courseDuration = user?.courses.filter(
         (course) => course.Courses_id === parseInt(courseId)
       )[0].Courses__Course_Duration;
@@ -185,9 +188,8 @@ export default function Certificate({
 
       // downloadCertificate();
     } catch (error) {
-      toast.error(
-        "Something went wrong while generating certificate:" + error.message
-      );
+      console.log(error);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
