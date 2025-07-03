@@ -1,9 +1,8 @@
 /* Custom Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Babylonica&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Babylonica&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 /* Flat UI Icons */
-@import url('https://cdn-uicons.flaticon.com/uicons-brands/css/uicons-brands.css');
-@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
-
+@import url("https://cdn-uicons.flaticon.com/uicons-brands/css/uicons-brands.css");
+@import url("https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css");
 
 :root {
   --white: #ffffff;
@@ -40,10 +39,9 @@ html {
   /* Font Family */
   /* font-family: 'Babylonica', cursive;
   /* font-family: 'Poppins', sans-serif; */
-  font-family: 'Poppins', 'Inter', sans-serif;
+  font-family: "Poppins", "Inter", sans-serif;
   scroll-behavior: smooth;
   overflow-x: hidden;
-
 }
 
 ::selection {
@@ -109,17 +107,21 @@ img {
   object-fit: cover;
 }
 
-
 /* Helper Class */
 
 .message-box {
   padding: 1rem 0;
   text-align: center;
-  background: linear-gradient(to right, transparent, var(--bg-dark), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--bg-dark),
+    transparent
+  );
   color: var(--blue);
   font-weight: 600;
   font-size: var(--small-font);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .animate-rotate {
@@ -130,7 +132,6 @@ img {
   to {
     transform: rotate(360deg);
   }
-
 }
 
 .pending {
@@ -146,10 +147,11 @@ img {
 }
 
 .danger {
-
   background: var(--danger-tint);
 }
-
+.missed {
+  background: #cdcdcd;
+}
 
 .icon,
 .icon i {
@@ -161,14 +163,13 @@ img {
 }
 
 .icon i {
-  margin-top: -.2rem;
+  margin-top: -0.2rem;
 }
 
-.icon~.text {
+.icon ~ .text {
   color: inherit;
   font-size: var(--medium-font);
 }
-
 
 .col {
   display: flex;
@@ -186,22 +187,15 @@ img {
   gap: 1rem;
 }
 
-
-
 @media screen and (max-width: 650px) {
   html {
     font-size: 50%;
   }
-
 }
-
-
-
-
 
 /* Responsive */
 
-@media screen and (max-width:650px) {
+@media screen and (max-width: 650px) {
   .dashboard-page {
     grid-template-columns: 1fr;
   }

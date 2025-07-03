@@ -34,7 +34,7 @@ function StatusLabel({ taskStatus, topicCompleted }) {
   } else {
     if (topicCompleted) {
       return (
-        <div className="status-label danger row">
+        <div className="status-label missed row">
           <div className="icon">
             <i className="fi fi-rr-alarm-exclamation"></i>
           </div>

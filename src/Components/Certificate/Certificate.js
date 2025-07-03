@@ -94,6 +94,7 @@ export default function Certificate({
           font: romanFont,
           color: rgb(0.61176, 0.22353, 0.29412),
         });
+
         pages[0].drawText(courseDuration + "", {
           x: 486,
           y: 305.5,
@@ -104,6 +105,7 @@ export default function Certificate({
         });
 
         const courseWidth = romanFont.widthOfTextAtSize(courseName, 28);
+
         pages[0].drawText(courseName, {
           x: pageWidth / 2 - courseWidth / 2,
           y: 250,
@@ -175,6 +177,9 @@ export default function Certificate({
         }
       } catch (error) {
         console.log(error);
+        toast.error(
+          "Error while generating certificate, please try again later"
+        );
       }
 
       const pdf = await pdfDoc.save();
