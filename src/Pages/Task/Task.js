@@ -101,7 +101,7 @@ export default function Task() {
       setMessage("Enter your link to procede");
     } else if (link.codeLink === Code_Link && link.outputLink === Output_Link) {
       setMessage("Submission link is already updated");
-    } else if (Topic_Completed) {
+    } else if (Topic_Completed && taskStatus !== "Rejected") {
       setMessage("Task Completion date is already passed");
     } else if (Task_Status === "Verified") {
       setMessage("Task is already verified");
