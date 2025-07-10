@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import templateUrl from "./Assets/template.pdf";
 import signUrl from "./Assets/sign.png";
 import { useApp } from "../../context/appContext";
+import { convertUrlToText } from "../../lib/utils";
 
 export default function Certificate({
   completedTask,
@@ -106,7 +107,7 @@ export default function Certificate({
 
         const courseWidth = romanFont.widthOfTextAtSize(courseName, 28);
 
-        pages[0].drawText(courseName, {
+        pages[0].drawText(convertUrlToText(courseName), {
           x: pageWidth / 2 - courseWidth / 2,
           y: 250,
           size: 28,
