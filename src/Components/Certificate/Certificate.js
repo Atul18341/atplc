@@ -25,9 +25,11 @@ export default function Certificate({
     try {
       setLoading(true);
       if (!user?.courses) await getCourses();
-      const courseDuration = user?.courses.filter(
-        (course) => course.Courses_id === parseInt(courseId)
-      )[0].Courses__Course_Duration;
+      console.log(user);
+      const courseDuration =
+        user?.courses?.filter(
+          (course) => course.Courses_id === parseInt(courseId)
+        )[0].Courses__Course_Duration || "0";
       const userId = user?.id;
 
       // const templateUrl = './Assets/Certificate/template.pdf'
