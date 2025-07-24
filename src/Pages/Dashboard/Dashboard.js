@@ -29,6 +29,9 @@ export default function Dashboard() {
   const [isLoading, setIsloading] = useState(true);
   const [taskData, setTaskData] = useState([]);
   const [completedTask, setCompletedTask] = useState([]);
+  const [feedback, setFeedback] = useState(
+    localStorage.getItem("feedback") || ""
+  );
 
   useEffect(() => {
     if (!loading && !user) {
@@ -179,14 +182,23 @@ export default function Dashboard() {
             })}
           </div>
 
-          <CourseFeedback />
-
-          <Certificate
-            completedTask={completedTask.length}
-            totalTask={taskData.length}
-            courseName={params?.courseName}
-            courseId={params?.id}
-          />
+          <CourseFeedback feedback={feedback} setFeedback={setFeedback} />
+          {feedback && feedback.length > 10 ? (
+            <Certificate
+              completedTask={completedTask.length}
+              totalTask={taskData.length}
+              courseName={params?.courseName}
+              courseId={params?.id}
+            />
+          ) : (
+            <div className="feedback-warning">
+              <i className="fi fi-rr-info"></i>
+              <p>
+                Please provide your feedback for this course. to download your
+                certificate.
+              </p>
+            </div>
+          )}
         </div>
       ) : (
         <Error error={error} />
