@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { convertUrlToText } from "../../lib/utils";
 import { useApp } from "../../context/appContext";
 import Loader from "../../Components/Loader/Loader";
-import scanner from "./Scanner/Java-scanner.jpg";
+import scanner2 from "./Scanner/Java-scanner.jpg";
 
 const CourseDetails = () => {
   const params = useParams();
@@ -85,7 +85,7 @@ const CourseDetails = () => {
 
           <div className="enroll-qr">
             <h4 className="desc-title">Course Enrollment:</h4>
-            <img src={scanner} width="200" height="200" alt="UPI Scanner" />
+            <img src={scanner2} width="200" height="200" alt="UPI Scanner" />
           </div>
 
           <div className="payment-message">
