@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { convertUrlToText } from "../../lib/utils";
 import { useApp } from "../../context/appContext";
 import Loader from "../../Components/Loader/Loader";
-import scanner from "./Scanner/Full-stack-scanner.jpg";
+import scanner from "./Scanner/Java-scanner.jpg";
 
 const CourseDetails = () => {
   const params = useParams();
@@ -79,7 +79,7 @@ const CourseDetails = () => {
             </div>
             <div className="">
               <h4 className="desc-title">Price :</h4>
-              <span>₹ {course?.Course_Price}</span>
+              <span>₹ {course?.Course_Price}+18% GST</span>
             </div>
           </div>
 
