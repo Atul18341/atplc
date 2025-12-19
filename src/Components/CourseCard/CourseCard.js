@@ -46,7 +46,7 @@ export default function CourseCard({
               <div className="icon">
                 <i className="fi fi-rr-indian-rupee-sign"></i>
               </div>
-              <div className="text">₹ {{couresPrice}}+18% GST</div>
+              <div className="text">₹ {couresPrice} + 18% GST</div>
             </div>
           ) : null}
         </div>
