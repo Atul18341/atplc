@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { convertUrlToText } from "../../lib/utils";
 import { useApp } from "../../context/appContext";
 import Loader from "../../Components/Loader/Loader";
-import scanner2 from "./Scanner/Java-scanner.jpg";
+import scanner2 from "./Scanner/Java-Scanner.png";
 
 const CourseDetails = () => {
   const params = useParams();
