@@ -239,7 +239,7 @@ export default function Courses() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeProcessingId, setActiveProcessingId] = useState<string | number | null>(null); 
   const router = useRouter();
-  const { user, loading, getCources } = useAuth(); // Retained your context typo specification hook match 
+  const { user, loading, getCourses } = useAuth(); // Retained your context typo specification hook match 
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -252,7 +252,7 @@ export default function Courses() {
         router.replace("/login");
       }
       if (!loading && user?.id && !user?.courses) {
-        getCources();
+        getCourses();
       }
     } catch (err: any) {
       const errorMessage = err.response?.data?.response || err.response?.data?.message || err.message;
@@ -261,7 +261,7 @@ export default function Courses() {
     } finally {
       setIsLoading(false);
     }
-  }, [router, user?.id, loading, user?.courses, getCources]);
+  }, [router, user?.id, loading, user?.courses, getCourses]);
 
   const handleInitiateDownloadFlow = useCallback(async (course: Course) => {
     if (!user?.id || activeProcessingId) return;
@@ -306,7 +306,7 @@ export default function Courses() {
               enrolled={true}
               id={course.Courses_id}
               courseName={course.Courses__Course_Name}
-              courseDuration={0}
+              courseDuration={''}
               courseCompletionStatus={course.Courses_Completed}
               coverImage={
                 course.Courses__Course_Thumbnail.startsWith("/media")
