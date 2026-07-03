@@ -182,55 +182,12 @@ export default function CourseDashboard() {
           </p>
         </div>
         <div className="flex items-center gap-3 self-start sm:self-center">
-          {/* 🔑 Dynamic overlay button back control link */}
-          {viewMeeting && (
-            <button
-              type="button"
-              onClick={() => setViewMeeting(false)}
-              className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/60 font-bold text-xs rounded-xl transition-all cursor-pointer"
-            >
-              <ArrowLeft size={14} />
-              <span>Exit Classroom</span>
-            </button>
-          )}
           <Account setHamburgerStatus={setHamburgerStatus} />
         </div>
       </div>
 
       {/* --- 🔑 INTERACTIVE LIVE VIDEO CONFERENCING ROW WRAPPER --- */}
-      <div className="w-full">
-        {viewMeeting ? (
-          /* Active Interactive Workspace Window Canvas View */
-          <div className="bg-slate-950 p-4 rounded-3xl border border-slate-900 shadow-xl animate-fadeIn">
-            <VideoWorkspace />
-          </div>
-        ) : (
-          /* Informative Launcher CTA Card interface layer */
-          <div className="w-full bg-white border border-slate-200/80 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs transition-all">
-            <div className="flex items-start gap-4 text-left">
-              <div className="p-3 bg-blue-500/10 text-blue-600 rounded-xl hidden sm:block">
-                <LayoutDashboard size={24} />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-base font-bold text-slate-900 m-0">Live Technical Mentorship Room</h3>
-                <p className="text-xs text-slate-500 max-w-xl leading-normal font-medium m-0">
-                  Join the automated real-time engineering code review laboratory channel. Interact with project leads, stream your terminal output, and ask context questions live.
-                </p>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setViewMeeting(true)}
-              className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-md shadow-blue-500/10 transition-all transform active:scale-98 tracking-wide uppercase cursor-pointer whitespace-nowrap border-none"
-            >
-              <Video size={14} strokeWidth={2.5} />
-              <span>Launch Interactive Classroom</span>
-            </button>
-          </div>
-        )}
-      </div>
-
+      <VideoWorkspace roomId={courseIdStr} roomName={decodedCourseName}/>
       {/* HIDE BASE SYLLABUS LIST TRACKS LOGS IF STUDENT IS ENGAGED IN CALL CANVASES */}
       {!viewMeeting && (
         <div className="space-y-6 animate-fadeIn">

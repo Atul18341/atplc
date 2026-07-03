@@ -19,11 +19,20 @@ import '@stream-io/video-react-sdk/dist/css/styles.css'; // Global stream styles
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY || "";
 
-export default function VideoWorkspace() {
+interface VideoWorkspaceProps {
+  roomId: string;       // Unique ID for the classroom call room
+  roomName?: string;     // Display name for the workspace layout header
+  isModerator?: boolean; // Controls whether to request elevated admin privileges
+}
+export default function VideoWorkspace({roomId, 
+  roomName, 
+  isModerator
+}: VideoWorkspaceProps) {
   const { user } = useAuth(); //
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   const [call, setCall] = useState<Call | null>(null);
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
+  const [isSessionActive, setSessionActive] = useState<boolean>(true);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const workspaceRef = useRef<HTMLDivElement | null>(null);
   const startMeeting = async () => {
@@ -59,8 +68,10 @@ export default function VideoWorkspace() {
     setClient(videoClient);
 
     const targetCall = videoClient.call('default', 'atplc_main_room');
+    await targetCall.camera.disable();
+    await targetCall.microphone.disable();
     await targetCall.join({ 
-      create: true,
+      create: false,
       // Pass the initial audio-visual media capture parameters directly here:
       ring: false,      // Prevents automatic phone-ringing sounds for standard classrooms
       notify: false,    // Set to true only if you want to push alerts to other members
@@ -117,7 +128,7 @@ export default function VideoWorkspace() {
       <StreamVideo client={client}>
         <StreamCall call={call}>
           {/* 🔑 ASSIGN THE REF LAYER HERE AND STYLE RESPONSIBLY FOR FULLSCREEN TRANSITIONS */}
-          <div ref={workspaceRef} className="w-full bg-slate-950 rounded-2xl overflow-hidden flex flex-col justify-between relative box-border">
+          <div ref={workspaceRef} className="w-full h-[85vh] min-h-[600px] bg-slate-950 rounded-2xl overflow-hidden flex flex-col justify-between relative box-border">
             
             <StreamTheme className={`w-full flex flex-col justify-between p-4 box-border relative transition-all ${
               isFullscreen ? 'h-screen p-6' : 'h-[75vh] min-h-[500px]'
@@ -131,13 +142,13 @@ export default function VideoWorkspace() {
               {/* Controller Dock Tray UI Layer */}
               <div className="w-full flex flex-col sm:flex-row items-center justify-between pt-4 gap-4 px-2 bg-slate-950/80 backdrop-blur-md relative z-20">
                 <div className="text-xs font-semibold text-slate-400 tracking-wide uppercase">
-                  Room: <span className="text-blue-400">ATPLC Main Classroom</span>
+                {roomId}-<span className="text-blue-400">ATPLC {roomName} Session</span>
                 </div>
                 
                 {/* Center Audio/Video Controls */}
                 <div className="flex items-center gap-3 p-2 bg-slate-900 rounded-2xl border border-slate-800">
                 <ToggleAudioPublishingButton />
-                
+                <ToggleVideoPublishingButton/>
                 <ScreenShareButton />
               </div>
                 {/* Right Action Trigger Deck Layout */}
@@ -173,25 +184,13 @@ export default function VideoWorkspace() {
   }
 
   return (
-    <div className="w-full bg-white border border-slate-200/80 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 box-border shadow-xs">
-      
-      {/* Informational Accent Frame Left side */}
-      <div className="flex items-start gap-4">
-        <div className="p-3 bg-blue-500/10 text-blue-600 rounded-xl hidden sm:block">
-          <MonitorPlay size={24} />
-        </div>
-        <div className="space-y-1">
-          <h3 className="text-base font-bold text-slate-900 m-0">Live Technical Mentorship Room</h3>
-          <p className="text-xs text-slate-500 max-w-md leading-normal font-medium">
-            Join the automated real-time engineering code review laboratory channel. Interact with project leads, stream your terminal output, and ask context questions live.
-          </p>
-        </div>
-      </div>
+    <div className="w-full bg-white border border-slate-200/80 p-6 rounded-2xl gap-6 box-border flex flex-col items-center justify-center direction- shadow-xs">
 
       {/* Action Activation Launcher Button Trigger Right side */}
+      <h3 className="font-bold text-[20px]">Online Session:</h3>
       <button
         type="button"
-        disabled={isConnecting || !user} // Disable if no active user session
+        disabled={isConnecting || !user || !isSessionActive} // Disable if no active user session
         onClick={startMeeting}
         className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:from-slate-700 disabled:to-slate-800 disabled:cursor-not-allowed text-white font-bold text-xs rounded-xl shadow-md shadow-blue-500/10 transition-all transform active:scale-98 tracking-wide uppercase cursor-pointer whitespace-nowrap"
       >
@@ -203,11 +202,11 @@ export default function VideoWorkspace() {
         ) : (
           <>
             <Video size={14} strokeWidth={2.5} />
-            <span>Join Session</span>
+            <span>Join Online Session</span>
           </>
         )}
       </button>
-
+     <p className="text-[12px]">Note: Above button is active only when the course is active and 10 min before scheduled time.</p>
     </div>
   );
 }

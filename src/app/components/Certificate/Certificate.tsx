@@ -128,7 +128,7 @@ export default function Certificate({
       <div className="absolute inset-6 border pointer-events-none" style={{ borderColor: 'rgba(217, 119, 6, 0.4)', borderStyle: 'dashed' }} />
       
       <div className="absolute inset-0 flex items-center justify-center opacity-[0.02] pointer-events-none select-none z-0">
-        <span className="text-[130px] font-black tracking-widest border-8 px-10 py-4 rotate-12" style={{ borderColor: '#1e3a8a' }}>LNMU</span>
+        <span className="text-[130px] font-black tracking-widest border-8 px-10 py-4 rotate-12" style={{ borderColor: '#1e3a8a' }}>ATPLC</span>
       </div>
 
       <div className="w-full flex items-center justify-between gap-2 z-10 pt-2 box-border">
