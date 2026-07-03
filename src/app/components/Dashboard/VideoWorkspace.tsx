@@ -183,49 +183,51 @@ function CallLayoutContainer({ roomId, roomName, isFullscreen, toggleFullscreen,
       </div>
 
       {/* Controller Dock Tray UI Layer */}
-      <div className="w-full flex flex-col sm:flex-row items-center justify-between pt-4 gap-4 px-2 bg-slate-950/80 backdrop-blur-md relative z-20">
-        <div className="text-xs font-semibold text-slate-400 tracking-wide uppercase">
-          {roomId} - <span className="text-blue-400">ATPLC {roomName} Session</span>
-          {activeVideoCount > 0 && <span className="text-emerald-400 ml-2">({activeVideoCount} Live Cams)</span>}
-        </div>
-        
-        {/* Center Audio/Video Controls */}
-        <div className="flex items-center gap-3 p-2 bg-slate-900 rounded-2xl border border-slate-800">
-          <ToggleAudioPublishingButton />
-          <ToggleVideoPublishingButton />
-          <ScreenShareButton />
-        </div>
+<div className={`w-full flex flex-col sm:flex-row items-center justify-between gap-4 px-4 bg-slate-950/90 backdrop-blur-md z-20 box-border transition-all duration-300 ${
+  isFullscreen 
+    ? 'absolute bottom-0 left-0 right-0 h-20 transform translate-y-full hover:translate-y-0 opacity-0 hover:opacity-100 p-4 bg-gradient-to-t from-black via-slate-950 to-transparent' 
+    : 'pt-4 relative h-auto'
+}`}>
+  
+  <div className="text-xs font-semibold text-slate-400 tracking-wide uppercase">
+    {roomId} - <span className="text-blue-400">ATPLC {roomName} Session</span>
+  </div>
+  
+  {/* Center Audio/Video Controls */}
+  <div className="flex items-center gap-3 p-2 bg-slate-900 rounded-2xl border border-slate-800">
+    <ToggleAudioPublishingButton />
+    <ToggleVideoPublishingButton />
+    <ScreenShareButton />
+  </div>
 
-        {/* Right Action Trigger Deck Layout */}
-        <div className="flex items-center gap-2.5 self-stretch sm:self-auto justify-end">
-          <button
-            type="button"
-            onClick={toggleFullscreen}
-            className="flex items-center justify-center p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-bold text-xs border border-slate-700 transition-all cursor-pointer box-border"
-            title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-          >
-            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-          </button>
-          
-          <button 
-            type="button"
-            onClick={() => setHideAllThumbnails(!hideAllThumbnails)}
-            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700 cursor-pointer transition-all"
-          >
-            {hideAllThumbnails ? "Show Peer Avatars" : "Hide Peer Avatars (Max Space)"}
-          </button>
-          
-          <button
-            type="button"
-            onClick={endMeeting}
-            className="flex items-center gap-1.5 px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-bold text-xs border border-red-500/20 transition-all cursor-pointer box-border"
-          >
-            <LogOut size={13} />
-            <span>Leave</span>
-          </button>
-        </div>
-      </div>
-
+  {/* Right Action Trigger Deck Layout */}
+  <div className="flex items-center gap-2.5 self-stretch sm:self-auto justify-end">
+    <button
+      type="button"
+      onClick={toggleFullscreen}
+      className="flex items-center justify-center p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-bold text-xs border border-slate-700 transition-all cursor-pointer box-border"
+    >
+      {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+    </button>
+    
+    <button 
+      type="button"
+      onClick={() => setHideAllThumbnails(!hideAllThumbnails)}
+      className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700 cursor-pointer transition-all"
+    >
+      {hideAllThumbnails ? "Show Peer Avatars" : "Hide Peer Avatars (Max Space)"}
+    </button>
+    
+    <button
+      type="button"
+      onClick={endMeeting}
+      className="flex items-center gap-1.5 px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-bold text-xs border border-red-500/20 transition-all cursor-pointer box-border"
+    >
+      <LogOut size={13} />
+      <span>Leave</span>
+    </button>
+  </div>
+</div>
     </StreamTheme>
   );
 }
