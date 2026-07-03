@@ -168,7 +168,7 @@ interface CallLayoutProps {
 
 function CallLayoutContainer({ roomId, roomName, isFullscreen, toggleFullscreen, endMeeting }: CallLayoutProps) {
   const [hideAllThumbnails, setHideAllThumbnails] = useState(false);
-  
+  const [showMobileControls, setShowMobileControls] = useState(true);
   // 🔑 These hooks can now run perfectly because they are wrapped inside an active <StreamCall> parent
   const { useRemoteParticipants } = useCallStateHooks();
   const remoteParticipants = useRemoteParticipants();
@@ -177,17 +177,26 @@ function CallLayoutContainer({ roomId, roomName, isFullscreen, toggleFullscreen,
   return (
     <StreamTheme className="w-full h-full flex flex-col justify-between p-0 m-0 box-border relative">
       
-      {/* Main Video Stream Grid */}
-      <div className="flex-1 w-full relative rounded-xl overflow-hidden bg-slate-900/60">
+    {/* 🔑 MAIN VIDEO STREAM GRID: Tapping this toggles the menu on mobile */}
+      <div 
+        onClick={() => {
+          if (isFullscreen) {
+            setShowMobileControls((prev) => !prev);
+          }
+        }}
+        className="flex-1 w-full relative rounded-xl overflow-hidden bg-slate-900/60 cursor-pointer"
+      >
         <SpeakerLayout participantsBarPosition={hideAllThumbnails ? null : "bottom"} />
       </div>
 
-      {/* Controller Dock Tray UI Layer */}
-<div className={`w-full flex flex-col sm:flex-row items-center justify-between gap-4 px-4 bg-slate-950/90 backdrop-blur-md z-20 box-border transition-all duration-300 ${
-  isFullscreen 
-    ? 'absolute bottom-0 left-0 right-0 h-20 transform translate-y-full hover:translate-y-0 opacity-0 hover:opacity-100 p-4 bg-gradient-to-t from-black via-slate-950 to-transparent' 
-    : 'pt-4 relative h-auto'
-}`}>
+      {/* 🔑 CONTROLLER DOCK TRAY: Combines Desktop Hover + Mobile State Fallbacks */}
+      <div className={`w-full flex flex-col sm:flex-row items-center justify-between gap-4 px-4 bg-slate-950/90 backdrop-blur-md z-20 box-border transition-all duration-300 ${
+        isFullscreen 
+          ? `absolute bottom-0 left-0 right-0 h-20 p-4 bg-gradient-to-t from-black via-slate-950 to-transparent transition-all duration-300 sm:translate-y-full sm:opacity-0 sm:hover:translate-y-0 sm:hover:opacity-100 ${
+              showMobileControls ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+            }` 
+          : 'pt-4 relative h-auto'
+      }`}>
   
   <div className="text-xs font-semibold text-slate-400 tracking-wide uppercase">
     {roomId} - <span className="text-blue-400">ATPLC {roomName} Session</span>
