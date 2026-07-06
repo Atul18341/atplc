@@ -76,7 +76,7 @@ function StatusLabel({ taskStatus, topicCompleted }: StatusLabelProps) {
 }
 
 // --- MAIN WORKSPACE CONTEXT CONTROLLER ---
-export function TaskWorkspaceCore() {
+ function TaskWorkspaceCore() {
   const params = useParams(); 
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();

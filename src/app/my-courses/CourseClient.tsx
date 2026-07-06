@@ -239,7 +239,7 @@ export default function Courses() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeProcessingId, setActiveProcessingId] = useState<string | number | null>(null); 
   const router = useRouter();
-  const { user, loading, getCourses } = useAuth(); // Retained your context typo specification hook match 
+  const { user, loading, getEnrolledCourses } = useAuth(); // Retained your context typo specification hook match 
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -252,7 +252,7 @@ export default function Courses() {
         router.replace("/login");
       }
       if (!loading && user?.id && !user?.courses) {
-        getCourses();
+        getEnrolledCourses();
       }
     } catch (err: any) {
       const errorMessage = err.response?.data?.response || err.response?.data?.message || err.message;
@@ -261,7 +261,7 @@ export default function Courses() {
     } finally {
       setIsLoading(false);
     }
-  }, [router, user?.id, loading, user?.courses, getCourses]);
+  }, [router, user?.id, loading, user?.courses, getEnrolledCourses]);
 
   const handleInitiateDownloadFlow = useCallback(async (course: Course) => {
     if (!user?.id || activeProcessingId) return;
@@ -313,7 +313,7 @@ export default function Courses() {
                   ? course.Courses__Course_Thumbnail
                   : "/media/" + course.Courses__Course_Thumbnail
               }
-              couresPrice={null}
+              coursePrice={null}
               courseTechnologies={null}
             />
             

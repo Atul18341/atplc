@@ -127,7 +127,7 @@ export default function Courses() {
               courseDuration={''}
               courseCompletionStatus={course.Courses_Completed}
               coverImage={thumbnailSrc}
-              couresPrice={null}
+              coursePrice={null}
               courseTechnologies={null}
             />
             
