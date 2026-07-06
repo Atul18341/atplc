@@ -14,7 +14,16 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
    allowedDevOrigins: ['192.168.1.13'],
    turbopack: {}, 
-  
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'atplc20.pythonanywhere.com',
+        port: '',
+        pathname: '/media/**', // Allows any media files coming out of the server storage bucket
+      },
+    ],
+  },
   experimental: {
     // 💡 Fixes the Call retries exceeded memory crash by restricting concurrent workers
     cpus: 1,

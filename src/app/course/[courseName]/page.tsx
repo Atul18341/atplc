@@ -28,6 +28,7 @@ export default function CourseDetailsPage() {
   // --- LOCAL COMPONENT STATES ---
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const BACKEND_PATH = process.env.NEXT_PUBLIC_BACKEND_PATH || "";
 
   // Synchronize detailed target course metadata safely out of app state context
   const fetchCourseData = useCallback(async () => {
@@ -46,13 +47,6 @@ export default function CourseDetailsPage() {
   useEffect(() => {
     if (courseNameParam) {
       document.title = `ATPLC | ${convertUrlToText(courseNameParam)}`;
-
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-       /* metaDescription.content = `Master ${convertUrlToText(
-          courseNameParam
-        )} with our expert-led course. Gain hands-on experience, real-world projects, and certification. Enroll now to boost your career!`;*/
-      }
     }
 
     window.scrollTo(0, 0);
@@ -98,7 +92,7 @@ export default function CourseDetailsPage() {
   // Dynamic calculations for durations safely handles state array conversions
   const durationMonths = Number(course?.Course_Duration) || 0;
   
-  // 🔑 Safe rendering handling: checks if global state has parsed technologies into an array or string array
+  // Safe rendering handling: checks if global state has parsed technologies into an array or string array
   const techStack: string[] = Array.isArray(course?.Course_Technologies) 
     ? course.Course_Technologies 
     : typeof course?.Course_Technologies === 'string'
@@ -117,6 +111,7 @@ export default function CourseDetailsPage() {
         </div>
       </div>
 
+      {/* Main Structural Showcase Split Container */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
         
         {/* --- LEFT HAND SECTION COLUMN (MEDIA & COPY CONTENT) --- */}
@@ -129,7 +124,7 @@ export default function CourseDetailsPage() {
                 src={
                   course.Course_Thumbnail.startsWith("http")
                     ? course.Course_Thumbnail
-                    : `https://atplc20.pythonanywhere.com/${course.Course_Thumbnail}`
+                    : `${BACKEND_PATH}${course.Course_Thumbnail}`
                 }
                 alt={`${course.Course_Name} visual course path showcase`}
                 fill
@@ -157,28 +152,6 @@ export default function CourseDetailsPage() {
                 {course.Course_Description}
               </p>
             )}
-          </div>
-
-          {/* Core Contents Dynamic Embed Window Card */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-xs space-y-4">
-            <div className="flex items-center gap-2.5 text-slate-400 dark:text-slate-500">
-              <BookOpen size={18} />
-              <h4 className="text-[11px] font-black tracking-widest uppercase m-0">Syllabus Curriculum Blueprint</h4>
-            </div>
-
-            <div className="w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 shadow-inner">
-              {course.Course_Contents ? (
-                <iframe
-                  src={course.Course_Contents}
-                  title={`${course.Course_Name} detailed syllabus outline document map`}
-                  className="w-full h-[500px] md:h-[600px] border-none block"
-                />
-              ) : (
-                <div className="w-full py-16 text-center text-xs font-semibold text-slate-400 dark:text-slate-500 italic">
-                  Complete program outline syllabus metrics file currently being initialized.
-                </div>
-              )}
-            </div>
           </div>
 
         </div>
@@ -245,6 +218,45 @@ export default function CourseDetailsPage() {
         </div>
 
       </div>
+
+      {/* --- 🔑 FULL WIDTH CURRICULUM DISPLAY PANEL SECTION --- */}
+<div className="max-w-7xl mx-auto px-4 md:px-8 mt-8">
+  <div className="bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-4 md:p-8 shadow-xs space-y-4">
+    
+    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+      <div className="flex items-center gap-2.5 text-slate-400 dark:text-slate-500">
+        <BookOpen size={18} />
+        <h4 className="text-[11px] font-black tracking-widest uppercase m-0">Syllabus Curriculum Blueprint</h4>
+      </div>
+      <span className="hidden sm:inline-block text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2.5 py-1 rounded-lg uppercase tracking-wider">
+        Full-Scale Document Mode
+      </span>
+    </div>
+
+    {/* 🔑 THE FIX: A responsive layout container wrapper that dynamically isolates margins */}
+    <div className="w-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 shadow-inner flex justify-center overflow-hidden">
+      {course.Course_Contents ? (
+        <iframe
+          // Dynamically targets google docs links to swap /edit out for a clean /preview page layout
+          src={
+            course.Course_Contents.includes("docs.google.com/document")
+              ? course.Course_Contents.split("/edit")[0] + "/preview"
+              : course.Course_Contents
+          }
+          title={`${course.Course_Name} detailed syllabus outline document map`}
+          // Use inline CSS scaling parameters to dynamically lock viewport aspect dimensions
+          style={{ width: "100%", maxWidth: "850px" }}
+          className="h-[650px] md:h-[850px] border-none block mx-auto transition-all duration-300"
+        />
+      ) : (
+        <div className="w-full py-16 text-center text-xs font-semibold text-slate-400 dark:text-slate-500 italic">
+          Complete program outline syllabus metrics file currently being initialized.
+        </div>
+      )}
+    </div>
+    
+  </div>
+</div>
 
       {/* --- PREMIUM FLOATING CONVERSION ACTION DESK --- */}
       <div className="fixed bottom-0 inset-x-0 bg-white/80 dark:bg-slate-900/80 border-t border-slate-200/80 dark:border-slate-800/80 shadow-2xl backdrop-blur-xl z-50 py-4 select-none box-border animate-slideUp">
