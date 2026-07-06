@@ -41,7 +41,8 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<AuthResponse>;
   logout: () => Promise<AuthResponse>;
   updateProfile: (params: UpdateProfileParams) => Promise<AuthResponse>;
-  getCourses: () => Promise<void>; // Retained original spelling typo from request schema
+  //getCourses: () => Promise<void>; 
+  getEnrolledCourses: () => Promise<void>; 
   loading: boolean;
   error: string | null;
 }
@@ -53,7 +54,8 @@ export const AuthContext = createContext<AuthContextType>({
   login: async () => ({ message: "", type: "error", success: false }),
   logout: async () => ({ message: "", type: "error", success: false }),
   updateProfile: async () => ({ message: "", type: "error", success: false }),
-  getCourses: async () => {},
+  //getCourses: async () => {},
+  getEnrolledCourses: async () => {},
   loading: true,
   error: null,
 });
@@ -169,7 +171,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const getCourses = async (): Promise<void> => {
+  const getEnrolledCourses = async (): Promise<void> => {
     try {
       setError(null);
       if (!user?.id) return;
@@ -254,7 +256,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     login,
     logout,
     loading,
-    getCourses,
+    //getCourses,
+    getEnrolledCourses,
     error,
   };
 

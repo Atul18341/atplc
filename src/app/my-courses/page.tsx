@@ -28,7 +28,7 @@ export default function Courses() {
   const [showReport, setShowReport] = useState<boolean>(false);
   
   const router = useRouter();
-  const { user, loading, getCourses } = useAuth();
+  const { user, loading, getEnrolledCourses } = useAuth();
 
   useEffect(() => {
     if (!loading && !user?.id) {
@@ -40,13 +40,13 @@ export default function Courses() {
     if (!user?.id || isSyncingCourses) return;
     try {
       setIsSyncingCourses(true);
-      await getCourses();
+      await getEnrolledCourses();
     } catch (err: any) {
       toast.error(err.message || "Failed to synchronize course records.");
     } finally {
       setIsSyncingCourses(false);
     }
-  }, [user?.id, getCourses, isSyncingCourses]);
+  }, [user?.id, getEnrolledCourses, isSyncingCourses]);
 
   useEffect(() => {
     if (user?.id && !user?.courses && !isSyncingCourses) {

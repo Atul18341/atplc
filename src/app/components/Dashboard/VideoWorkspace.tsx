@@ -59,11 +59,11 @@ export default function VideoWorkspace({ roomId, roomName, isModerator }: VideoW
       setClient(videoClient);
 
       // 🔑 Fixed: Use dynamic roomId prop instead of hardcoded 'atplc_main_room' string
-      const targetCall = videoClient.call('default', 'atplc_main_room');
+      const targetCall = videoClient.call('default', roomId);
       await targetCall.camera.disable();
       await targetCall.microphone.disable();
       await targetCall.join({ 
-        create: false,
+        create: true,
         ring: false,      
         notify: false,    
       });

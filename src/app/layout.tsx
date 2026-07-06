@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthContextProvider } from "./Context/AuthContext";
+import { AppContextProvider } from './Context/AppContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./globals.css";
@@ -46,6 +47,7 @@ export default function RootLayout({
       
       <body className="min-h-full flex flex-col">
         <AuthContextProvider>
+          <AppContextProvider>
         <Header/>
         {children}
         <ToastContainer 
@@ -60,6 +62,7 @@ export default function RootLayout({
           pauseOnHover
           theme="light"
         />
+        </AppContextProvider>
         </AuthContextProvider>
         </body>
     </html>

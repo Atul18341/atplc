@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
-import axios from "axios";
-import { Copy, Info, Award, FileText, ArrowLeft, Video, LayoutDashboard } from 'lucide-react';
+import { Copy, Info, Award, FileText, Loader2, BookOpen } from 'lucide-react';
 import {
   WhatsappShareButton as OriginalWhatsappShareButton,
   WhatsappIcon,
@@ -12,6 +11,7 @@ import {
 } from "react-share";
 
 import { useAuth } from "../../../Context/AuthContext";
+import { useApp } from "../../../Context/AppContext";
 import { convertUrlToText } from "../../../lib/utils";
 import TaskCard from "../../../components/TaskCard/TaskCard";
 import Card from "../../../components/ProgressCard/ProgressCard";
@@ -20,14 +20,12 @@ import Certificate from "../../../components/Certificate/Certificate";
 import CourseCardSkeleton from "../../../components/CourseCard/CourseCardSkeleton";
 import Account from "@/app/components/Account/Account";
 import ErrorBox from "../../../components/ErrorBox/ErrorBox";
-
-// 🔑 IMPORT YOUR LIVE STREAM MENTORSHIP CALL WORKSPACE
 import VideoWorkspace from "../../../components/Dashboard/VideoWorkspace";
 
 // --- INTERFACES ---
 interface Task {
   id: string | number;
-  Task_No: string | number;
+  Task_No: number;
   Task_Topic: string;
   Task_Content: string;
   Topic_Completed?: boolean;
@@ -48,44 +46,46 @@ interface Submission {
 export default function CourseDashboard() {
   const params = useParams();
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  
+  const { loading: contextLoading, error: contextError, getDashboardTasks } = useApp() as {
+    loading: boolean;
+    error: string | null;
+    getDashboardTasks: (courseId: string, username: string) => Promise<{ tasks: any[]; submissions: any[] }>;
+  };
+
   const [hamburgerStatus, setHamburgerStatus] = useState(false);
   
-  // Route parameters type sanitization 
   const courseIdStr = params?.id as string || "";
   const courseNameUrl = params?.courseName as string || "";
   const decodedCourseName = convertUrlToText(courseNameUrl);
 
-  const [error, setError] = useState<any>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [localError, setLocalError] = useState<string>("");
   const [taskData, setTaskData] = useState<Task[]>([]);
   const [completedTask, setCompletedTask] = useState<Submission[]>([]);
   const [tooltipText, setTooltipText] = useState<string>("copy");
   
-  // 🔑 State pointer managing active live video classroom view overlays
   const [viewMeeting, setViewMeeting] = useState<boolean>(false);
-  
-  // State locks managing the inline dynamic certificate view box toggles
   const [showCertificatePreview, setShowCertificatePreview] = useState<boolean>(false);
   const [activateCertGeneration, setActivateCertGeneration] = useState<boolean>(false);
   
-  const [feedback, setFeedback] = useState<string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("feedback") || "";
-    }
-    return "";
-  });
+  // 🔑 FIX: Initialize to an empty string on the server to prevent initial DOM mismatch errors
+  const [feedback, setFeedback] = useState<string>("");
 
-  // Calculate dynamic completion ratios for enforcement rules
-  const executionPercentage = taskData.length > 0 ? (completedTask.length / taskData.length) * 100 : 0;
-  const isEligible = executionPercentage >= 75;
+  // 🔑 FIX: Populate feedback safely out of localStorage only after successful browser mounting
+  useEffect(() => {
+    const savedFeedback = localStorage.getItem("feedback");
+    if (savedFeedback) {
+      setFeedback(savedFeedback);
+    }
+  }, []);
 
   // Client Session Route Guard Rail
   useEffect(() => {
-    if (!loading && !user?.id) {
+    if (!authLoading && !user?.id) {
       router.replace("/login");
     }
-  }, [user, router, loading]);
+  }, [user, router, authLoading]);
 
   // Synchronize Metadata Fields Natively
   useEffect(() => {
@@ -94,38 +94,23 @@ export default function CourseDashboard() {
     }
   }, [decodedCourseName]);
 
-  // Execute Task Payload API Synchronizations
   useEffect(() => {
-    async function getTasks() {
+    async function syncDashboardData() {
+      if (!user?.id || !courseIdStr) return;
+
       try {
-        setIsLoading(true);
-        setError(""); 
-        const BACKEND_PATH = process.env.NEXT_PUBLIC_BACKEND_PATH || "";
+        setLocalError("");
         
-        const { data } = await axios.post(`${BACKEND_PATH}/dashboard`, {
-          course: courseIdStr,
-          Username: user?.id,
-        });
+        const { tasks, submissions } = await getDashboardTasks(courseIdStr, user.id);
 
-        const submissions: Submission[] = data?.Submissions || [];
-        const tasks: Task[] = data?.Tasks || [];
-
-        // Deduplicate submissions map tracking matching Task_No_id rows
-        const uniqueSubmissions = Object.values(
-          submissions.reduce<Record<string | number, Submission>>((acc, task) => {
-            acc[task.Task_No_id] = task;
-            return acc;
-          }, {})
-        );
-
-        const approvedFilter = uniqueSubmissions.filter((sub) => sub.Task_Status === "Approved");
+        const approvedFilter = submissions.filter((sub: any) => sub.Task_Status === "Approved");
         setCompletedTask(approvedFilter);
 
-        // Hydrate configuration records matrix mappings
-        const structuralTasksMapping = tasks.map((task) => {
-          const matchingSubmission = uniqueSubmissions.find((sub) => sub.Task_No_id === task.id);
+        const structuralTasksMapping = tasks.map((task: any) => {
+          const matchingSubmission = submissions.find((sub: any) => String(sub.Task_No_id) === String(task.id));
           return {
             ...task,
+            Task_No: Number(task.Task_No),
             Task_Status: matchingSubmission?.Task_Status || "",
             Code_Link: matchingSubmission?.Code_Link || "",
             Output_Link: matchingSubmission?.Output_Link || "",
@@ -134,17 +119,18 @@ export default function CourseDashboard() {
         });
 
         setTaskData(structuralTasksMapping);
-      } catch (e: any) {
-        setError(e);
-      } finally {
-        setIsLoading(false);
+      } catch (err: any) {
+        setLocalError(err.message || "Failed to load dashboard tasks tracking context matrix.");
       }
     }
 
-    if (user?.id) {
-      getTasks();
+    if (!authLoading && user?.id) {
+      syncDashboardData();
     }
-  }, [courseIdStr, user?.id]);
+  }, [courseIdStr, user?.id, authLoading, getDashboardTasks]);
+
+  const executionPercentage = taskData.length > 0 ? (completedTask.length / taskData.length) * 100 : 0;
+  const isEligible = executionPercentage >= 75;
 
   const handleNativeCopyAction = async () => {
     try {
@@ -158,6 +144,9 @@ export default function CourseDashboard() {
   const shareUrl = `https://www.atplc.in/dashboard/${user?.id}/${courseIdStr}`;
   const shareTitle = `My ${decodedCourseName} Work at ATPLC`;
 
+  const activeDisplayError = localError || contextError || "";
+  const isCurrentlyLoading = contextLoading && taskData.length === 0;
+
   const dashboardSkeletons = useMemo(() => {
     return (
       <div className="w-full space-y-6">
@@ -169,10 +158,10 @@ export default function CourseDashboard() {
   }, []);
 
   return (
-    <section className="w-full min-h-screen bg-slate-50/50 p-6 md:p-10 space-y-8 select-none">
+    <section className="w-full min-h-screen bg-slate-50/50 p-6 md:p-10 space-y-8 select-none font-sans text-slate-900 box-border">
       
       {/* --- HEADER TITLE BAR --- */}
-      <div className="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+      <div className="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs box-border">
         <div className="space-y-1">
           <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight m-0">
             {decodedCourseName}
@@ -186,14 +175,13 @@ export default function CourseDashboard() {
         </div>
       </div>
 
-      {/* --- 🔑 INTERACTIVE LIVE VIDEO CONFERENCING ROW WRAPPER --- */}
       <VideoWorkspace roomId={courseIdStr} roomName={decodedCourseName}/>
-      {/* HIDE BASE SYLLABUS LIST TRACKS LOGS IF STUDENT IS ENGAGED IN CALL CANVASES */}
+
       {!viewMeeting && (
-        <div className="space-y-6 animate-fadeIn">
+        <div className="space-y-6 animate-fadeIn w-full box-border">
           
           {/* --- METRIC CARD PROGRESS CONTAINER --- */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full box-border">
             <Card
               heading="Verified Submission"
               icon="fi fi-rr-list-check"
@@ -203,13 +191,13 @@ export default function CourseDashboard() {
             <Card
               heading="Pending Tasks"
               icon="fi fi-rr-info"
-              obtainedScore={taskData.length - completedTask.length}
+              obtainedScore={Math.max(0, taskData.length - completedTask.length)}
               totalScore={taskData.length}
             />
           </div>
 
           {/* --- ACTIONS & SHARE CONTROL TOOLBAR --- */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 p-4 rounded-xl shadow-sm box-border">
             <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider m-0">Course Tasks</h4>
             
             <div className="flex items-center gap-2.5">
@@ -228,22 +216,27 @@ export default function CourseDashboard() {
                 className="group relative flex items-center justify-center p-2.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-full transition-colors cursor-pointer"
               >
                 <Copy size={16} className="text-slate-600" />
-                <span className="absolute -top-8 px-2 py-1 bg-slate-900 text-white text-[10px] font-bold rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity capitalize font-sans whitespace-nowrap z-20">
+                <span className="absolute -top-8 px-2 py-1 bg-slate-900 text-white text-[10px] font-bold rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity capitalize whitespace-nowrap z-20">
                   {tooltipText}
                 </span>
               </button>
             </div>
           </div>
 
-          {/* --- DYNAMIC TASK VIEW PORTION AND LOCALIZED IN-LINE ERROR HANDLING --- */}
-          {isLoading ? (
+          {/* --- DYNAMIC TASK RENDERING PORTION CONTROLLER --- */}
+          {isCurrentlyLoading ? (
             dashboardSkeletons
-          ) : error !== "" ? (
-            <div className="py-6 border border-dashed border-slate-200 rounded-2xl bg-white p-6">
-              <ErrorBox error={error} />
+          ) : activeDisplayError !== "" ? (
+            <div className="py-6 border border-dashed border-slate-200 rounded-2xl bg-white p-6 box-border">
+              <ErrorBox error={activeDisplayError} />
+            </div>
+          ) : taskData.length === 0 ? (
+            <div className="w-full text-center py-12 bg-white border border-dashed border-slate-200 rounded-2xl text-slate-400 font-medium text-sm shadow-xs box-border">
+              <BookOpen size={32} className="mx-auto text-slate-300 mb-2" />
+              No syllabus lab items registered under this technical division.
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full box-border">
               {taskData.map((task) => (
                 <TaskCard
                   key={task.Task_No}
@@ -262,12 +255,12 @@ export default function CourseDashboard() {
             </div>
           )}
 
-          {/* --- UNIFIED DYNAMIC CERTIFICATE EXTRACTION WITH LAZY PREVIEW WORKFLOW --- */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-2 shadow-sm space-y-3">
+          {/* --- UNIFIED DYNAMIC CERTIFICATE EXTRACTION --- */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-2 shadow-sm space-y-3 box-border">
             <CourseFeedback feedback={feedback} setFeedback={setFeedback} />
           </div>
           
-          <div className="bg-white border border-slate-200 rounded-2xl p-2 shadow-sm space-y-6 pt-4 flex flex-col items-center min-h-[150px] w-full gap-6">
+          <div className="bg-white border border-slate-200 rounded-2xl p-2 shadow-sm space-y-6 pt-4 flex flex-col items-center min-h-[150px] w-full gap-6 box-border">
             <section className="w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 box-border">
               {feedback && feedback.length > 10 ? (
                 <div className="space-y-4 w-full">

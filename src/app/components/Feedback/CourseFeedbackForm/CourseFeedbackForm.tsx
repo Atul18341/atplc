@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Edit2, Send, MessageSquare } from "lucide-react";
+import { Edit2, MessageSquare } from "lucide-react";
 
 import { useAuth } from "../../../Context/AuthContext";
 import Button from "../../Button";
@@ -16,11 +16,19 @@ interface CourseFeedbackProps {
 
 export default function CourseFeedback({ feedback, setFeedback }: CourseFeedbackProps) {
   const { user } = useAuth();
+  
+  // 🔑 Step 1: Add a component mount state flag to eliminate SSR differences
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inputFeedback, setInputFeedback] = useState<string>(feedback || "");
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<boolean>(
     feedback !== undefined && feedback.length > 10
   );
+
+  // 🔑 Step 2: Trigger flag inversion only once the browser takes over live execution
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const sendFeedback = async () => {
     try {
@@ -34,7 +42,7 @@ export default function CourseFeedback({ feedback, setFeedback }: CourseFeedback
       const BACKEND_PATH = process.env.NEXT_PUBLIC_BACKEND_PATH || "";
       const { data } = await axios.post(`${BACKEND_PATH}/submit-feedback`, {
         Username: user?.id,
-        Feedback: inputFeedback, // Fixed bug where legacy code sent stale 'feedback' instead of 'inputFeedback'
+        Feedback: inputFeedback,
       });
 
       toast.success(data?.Response || "Feedback submitted successfully!");
@@ -65,6 +73,35 @@ export default function CourseFeedback({ feedback, setFeedback }: CourseFeedback
     sendFeedback();
   };
 
+  // 🔑 Step 3: Serve the precise layout match to next.js server pre-renders
+  if (!isMounted) {
+    return (
+      <section className="w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+        <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+          <MessageSquare size={18} className="text-blue-600" />
+          <h4 className="text-base font-bold text-slate-800 tracking-tight">Your Feedback</h4>
+        </div>
+        <p className="text-xs text-slate-500 leading-relaxed max-w-2xl">
+          ATPLC would be delighted to hear about your experience during this
+          course and any suggestions you may have to improve it. Your submission is required to process automated completion certifications.
+        </p>
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-4 max-w-3xl">
+          <div className="w-full">
+            <Input
+              type="textarea"
+              label="Share your learning experience..."
+              name="feedback"
+              value={inputFeedback}
+              onChange={handleChange}
+              disabled={true}
+            />
+          </div>
+        </form>
+      </section>
+    );
+  }
+
+  // --- STANDARD INTERACTIVE CLIENT RENDERING ---
   return (
     <section className="w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
       {/* --- SECTION HEADER --- */}

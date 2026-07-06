@@ -12,7 +12,7 @@ interface CourseCardProps {
   courseDuration?: string;
   coverImage?: string;
   courseCompletionStatus?: boolean;
-  couresPrice?: number | string | null;
+  coursePrice?: number | string | null;
   courseTechnologies?: string | null;
 }
 
@@ -23,7 +23,7 @@ export default function CourseCard({
   courseDuration = '',
   coverImage,
   courseCompletionStatus = false,
-  couresPrice = null,
+  coursePrice = null,
   courseTechnologies = null,
 }: CourseCardProps) {
   
@@ -33,7 +33,7 @@ export default function CourseCard({
   // Structure routing layouts using Next.js route parameter guidelines
   const url = enrolled
     ? `/dashboard/${id}/${convertToUrlSlug(courseName)}`
-    : `/course/${convertToUrlSlug(courseName)}?id=${id}`;
+    : `/course/${convertToUrlSlug(courseName)}`;
 
   return (
     <div className="group relative flex flex-col w-full h-full bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
@@ -58,7 +58,7 @@ export default function CourseCard({
           
           {/* Subtle elegant gradient overlay text title scrim */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent p-4 flex items-end">
-            <h4 className="text-base font-bold text-white tracking-tight line-clamp-2 leading-snug drop-shadow-sm">
+            <h4 className="text-base font-bold text-white tracking-tight line-clamp-2 leading-snug drop-shadow-sm text-[18px]">
               {courseName}
             </h4>
           </div>
@@ -68,19 +68,19 @@ export default function CourseCard({
         <div className="flex flex-col flex-1 p-5 space-y-4">
           
           {/* Duration & Price Indicators container */}
-          {(courseDuration !== '' || (couresPrice !== null && !enrolled)) && (
+          {(courseDuration !== '' || (coursePrice !== null && !enrolled)) && (
             <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600 font-medium">
               {courseDuration !== '' && (
-                <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg">
+                <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg text-[14px]">
                   <i className="fi fi-rr-hourglass-start text-blue-500 mt-0.5" />
-                  <span>{courseDuration} Hours</span>
+                  <span>{courseDuration}</span>
                 </div>
               )}
               
-              {couresPrice !== null && !enrolled && (
-                <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-lg text-emerald-700 font-bold">
+              {coursePrice !== null && !enrolled && (
+                <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-lg text-emerald-700 font-bold text-[16px]">
                   <i className="fi fi-rr-indian-rupee-sign mt-0.5 text-xs" />
-                  <span>{couresPrice} <span className="text-[10px] text-emerald-600/70 font-medium">+ 18% GST</span></span>
+                  <span>&#8377; {coursePrice} <span className="text-[12px] text-emerald-600/70 font-medium">+ 18% GST</span></span>
                 </div>
               )}
             </div>
@@ -91,7 +91,7 @@ export default function CourseCard({
             <div className="flex flex-wrap gap-1.5">
               {courseTechnologies.split(",").map((tech, index) => (
                 <span 
-                  className="text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md border border-slate-200/40" 
+                  className="text-[12px] font-bold tracking-wide uppercase px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md border border-slate-200/40" 
                   key={index}
                 >
                   {tech.trim()}
