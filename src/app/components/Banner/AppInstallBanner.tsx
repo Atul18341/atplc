@@ -22,9 +22,23 @@ export default function AppInstallBanner() {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       
-      // Only show if the user hasn't explicitly dismissed it in this session
-      const isBannerDismissed = localStorage.getItem('app_badge_dismissed') === 'true';
-      if (!isBannerDismissed) {
+      // 🔑 1-DAY EXPIRATION CHECK ENGINE
+      const dismissedAt = localStorage.getItem('app_badge_dismissed_time');
+      
+      if (dismissedAt) {
+        const dismissedTime = parseInt(dismissedAt, 10);
+        const currentTime = Date.now();
+        const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // 24 hours
+        
+        // If more than 24 hours have passed, clear the old lock state
+        if (currentTime - dismissedTime > oneDayInMilliseconds) {
+          localStorage.removeItem('app_badge_dismissed_time');
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      } else {
+        // No dismissal history found, safe to show the prompt card
         setIsVisible(true);
       }
     };
@@ -55,7 +69,8 @@ export default function AppInstallBanner() {
 
   const handleDismiss = () => {
     setIsVisible(false);
-    localStorage.setItem('app_badge_dismissed', 'true');
+    // 🔑 Save the exact millisecond timestamp when the user hit close
+    localStorage.setItem('app_badge_dismissed_time', Date.now().toString());
   };
 
   if (!isVisible) return null;
