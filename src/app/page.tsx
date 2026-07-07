@@ -2,14 +2,10 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 // --- COMPONENT IMPORTS ---
-// Adjust the relative paths below to match your project folder structure
 import Hero from './components/Hero/Hero';
-//import OurExperties from '../components/OurExperties/OurExperties';
 import PageStatics from './components/PageStatstics/PageStatstics';
-//import Feedback from '../components/Feedback/Feedbacks';
+import TestimonialsCarousel from './components/Feedback/TestimonialsCarousel/TestimonialsCarousel';
 
-// --- NEXT.JS NATIVE METADATA ENGINE ---
-// Replaces the document.title and META tag manipulation cleanly on the server side
 export const metadata: Metadata = {
   title: 'ATPLC Portal | Home',
   description: 'ATPLC is a Technical and Practical Learning Club. It provides a variety of courses with one-on-one doubt resolution and internships under the guidance of experts.',
@@ -28,8 +24,8 @@ export default function LandingPage() {
         <Hero />
       </div>
 
-      {/* 2. Core Operational Modules Splitter */}
-      <div className="w-full space-y-16 md:space-y-24 py-12 md:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 box-border">
+      {/* 2. Core Operational Modules Splitter (Tighter spacing applied here) */}
+      <div className="w-full space-y-8 md:space-y-6 py-6 md:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 box-border">
         
         {/* Expertise Grid Section Area */}
         <section className="w-full transition-all duration-300 transform hover:translate-y-[-2px]">
@@ -45,11 +41,11 @@ export default function LandingPage() {
         </section>
 
         {/* Separator Accent Line */}
-        <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto" />
-
+        <div className="w-24 h-[0.5px] bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto" />
+        
         {/* Social Proof Peer Feedbacks Canvas Carousel */}
         <section className="w-full">
-          {/*<Feedback />*/}
+         <TestimonialsCarousel/>
         </section>
 
       </div>

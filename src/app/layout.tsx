@@ -6,6 +6,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./globals.css";
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import AppInstallBanner from './components/Banner/AppInstallBanner';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -48,8 +50,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <AuthContextProvider>
           <AppContextProvider>
+            <AppInstallBanner/>
         <Header/>
         {children}
+        <Footer/>
         <ToastContainer 
           position="top-right"
           autoClose={4000}
